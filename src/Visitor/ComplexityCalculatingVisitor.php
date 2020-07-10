@@ -28,10 +28,10 @@ final class ComplexityCalculatingVisitor extends NodeVisitorAbstract
      */
     private $result = [];
 
-    public function enterNode(Node $node): void
+    public function enterNode(Node $node)
     {
         if (!$node instanceof ClassMethod && !$node instanceof Function_) {
-            return;
+            return null;
         }
 
         if ($node instanceof ClassMethod) {
@@ -48,6 +48,8 @@ final class ComplexityCalculatingVisitor extends NodeVisitorAbstract
             $name,
             $this->cyclomaticComplexity($statements)
         );
+
+        return NodeTraverser::DONT_TRAVERSE_CHILDREN;
     }
 
     public function result(): ComplexityCollection
