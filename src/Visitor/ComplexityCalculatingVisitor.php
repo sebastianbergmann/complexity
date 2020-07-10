@@ -16,6 +16,7 @@ use PhpParser\Node\Name;
 use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
+use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitorAbstract;
 
 final class ComplexityCalculatingVisitor extends NodeVisitorAbstract
@@ -51,7 +52,16 @@ final class ComplexityCalculatingVisitor extends NodeVisitorAbstract
      */
     private function cyclomaticComplexity(array $statements): int
     {
-        return 1;
+        $traverser = new NodeTraverser;
+
+        $cyclomaticComplexityCalculatingVisitor = new CyclomaticComplexityCalculatingVisitor;
+
+        $traverser->addVisitor($cyclomaticComplexityCalculatingVisitor);
+
+        /* @noinspection UnusedFunctionResultInspection */
+        $traverser->traverse($statements);
+
+        return $cyclomaticComplexityCalculatingVisitor->cyclomaticComplexity();
     }
 
     /**
@@ -59,7 +69,16 @@ final class ComplexityCalculatingVisitor extends NodeVisitorAbstract
      */
     private function npathComplexity(array $statements): int
     {
-        return 1;
+        $traverser = new NodeTraverser;
+
+        $npathComplexityCalculatingVisitor = new NpathComplexityCalculatingVisitor;
+
+        $traverser->addVisitor($npathComplexityCalculatingVisitor);
+
+        /* @noinspection UnusedFunctionResultInspection */
+        $traverser->traverse($statements);
+
+        return $npathComplexityCalculatingVisitor->npathComplexity();
     }
 
     private function classMethodName(ClassMethod $node): string
