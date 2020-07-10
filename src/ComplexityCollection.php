@@ -58,4 +58,15 @@ final class ComplexityCollection implements Countable, IteratorAggregate
     {
         return empty($this->items);
     }
+
+    public function cyclomaticComplexity(): int
+    {
+        $cyclomaticComplexity = 0;
+
+        foreach ($this as $item) {
+            $cyclomaticComplexity += $item->cyclomaticComplexity();
+        }
+
+        return $cyclomaticComplexity;
+    }
 }

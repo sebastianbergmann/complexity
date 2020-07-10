@@ -66,4 +66,11 @@ final class ComplexityCollectionTest extends TestCase
         $this->assertArrayHasKey(1, $array);
         $this->assertSame($this->array[1], $array[1]);
     }
+
+    public function testHasCyclomaticComplexity(): void
+    {
+        $collection = ComplexityCollection::fromList($this->array[0], $this->array[1]);
+
+        $this->assertSame(3, $collection->cyclomaticComplexity());
+    }
 }
