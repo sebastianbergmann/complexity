@@ -10,6 +10,7 @@
 namespace SebastianBergmann\Complexity;
 
 use PhpParser\Error;
+use PhpParser\Node;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\ParserFactory;
@@ -29,7 +30,33 @@ final class Calculator
      */
     public function calculateForSourceString(string $source): ComplexityCollection
     {
-        $parser                       = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+
+        try {
+            $nodes = $parser->parse($source);
+
+            assert($nodes !== null);
+
+            return $this->calculateForAbstractSyntaxTree($nodes);
+
+            // @codeCoverageIgnoreStart
+        } catch (Error $error) {
+            throw new RuntimeException(
+                $error->getMessage(),
+                (int) $error->getCode(),
+                $error
+            );
+        }
+        // @codeCoverageIgnoreEnd
+    }
+
+    /**
+     * @param Node[] $nodes
+     *
+     * @throws RuntimeException
+     */
+    public function calculateForAbstractSyntaxTree(array $nodes): ComplexityCollection
+    {
         $traverser                    = new NodeTraverser;
         $complexityCalculatingVisitor = new ComplexityCalculatingVisitor;
 
@@ -38,10 +65,6 @@ final class Calculator
         $traverser->addVisitor($complexityCalculatingVisitor);
 
         try {
-            $nodes = $parser->parse($source);
-
-            assert($nodes !== null);
-
             /* @noinspection UnusedFunctionResultInspection */
             $traverser->traverse($nodes);
             // @codeCoverageIgnoreStart

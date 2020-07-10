@@ -10,6 +10,7 @@
 namespace SebastianBergmann\Complexity;
 
 use function file_get_contents;
+use PhpParser\ParserFactory;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -50,7 +51,7 @@ final class CalculatorTest extends TestCase
         $this->assertSame(14, $result[0]->cyclomaticComplexity());
     }
 
-    public function testCalculatesCyclomaticComplexityOfClassMethodInSourceString(): void
+    public function testCalculatesCyclomaticComplexityInSourceString(): void
     {
         $result = (new Calculator)->calculateForSourceString(file_get_contents(__DIR__ . '/../_fixture/ExampleClass.php'))->asArray();
 
@@ -58,19 +59,15 @@ final class CalculatorTest extends TestCase
         $this->assertSame(14, $result[0]->cyclomaticComplexity());
     }
 
-    public function testCalculatesCyclomaticComplexityOfTraitMethodInSourceString(): void
+    public function testCalculatesCyclomaticComplexityInAbstractSyntaxTree(): void
     {
-        $result = (new Calculator)->calculateForSourceString(file_get_contents(__DIR__ . '/../_fixture/ExampleTrait.php'))->asArray();
+        $nodes = (new ParserFactory)->create(ParserFactory::PREFER_PHP7)->parse(file_get_contents(__DIR__ . '/../_fixture/ExampleClass.php'));
 
-        $this->assertSame('SebastianBergmann\Complexity\TestFixture\ExampleTrait::method', $result[0]->name());
-        $this->assertSame(14, $result[0]->cyclomaticComplexity());
-    }
+        assert($nodes !== null);
 
-    public function testCalculatesCyclomaticComplexityOfFunctionInSourceString(): void
-    {
-        $result = (new Calculator)->calculateForSourceString(file_get_contents(__DIR__ . '/../_fixture/example_function.php'))->asArray();
+        $result = (new Calculator)->calculateForAbstractSyntaxTree($nodes)->asArray();
 
-        $this->assertSame('SebastianBergmann\Complexity\TestFixture\example_function', $result[0]->name());
+        $this->assertSame('SebastianBergmann\Complexity\TestFixture\ExampleClass::method', $result[0]->name());
         $this->assertSame(14, $result[0]->cyclomaticComplexity());
     }
 }
