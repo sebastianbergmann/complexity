@@ -26,9 +26,7 @@ final class CalculatorTest extends TestCase
 {
     public function testOne(): void
     {
-        $calculator = new Calculator;
-
-        $result = $calculator->calculate(__DIR__ . '/../_fixture/Example.php')->asArray();
+        $result = (new Calculator)->calculate(__DIR__ . '/../_fixture/Example.php')->asArray();
 
         $this->assertSame('SebastianBergmann\Complexity\TestFixture\Example::method', $result[0]->name());
         $this->assertSame(1, $result[0]->cyclomaticComplexity());
