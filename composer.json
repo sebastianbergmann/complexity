@@ -15,13 +15,12 @@
         "issues": "https://github.com/sebastianbergmann/complexity/issues"
     },
     "prefer-stable": true,
-    "minimum-stability": "dev",
     "require": {
         "php": "^7.3 || ^8.0",
         "nikic/php-parser": "^4.6"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.3"
+        "phpunit/phpunit": "^9.2"
     },
     "config": {
         "platform": {
