@@ -16,6 +16,8 @@ use PHPUnit\Framework\TestCase;
  * @covers \SebastianBergmann\Complexity\ComplexityCollectionIterator
  *
  * @uses \SebastianBergmann\Complexity\Complexity
+ *
+ * @small
  */
 final class ComplexityCollectionTest extends TestCase
 {

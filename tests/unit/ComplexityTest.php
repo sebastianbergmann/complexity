@@ -13,6 +13,8 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \SebastianBergmann\Complexity\Complexity
+ *
+ * @small
  */
 final class ComplexityTest extends TestCase
 {
