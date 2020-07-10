@@ -28,7 +28,7 @@ final class ComplexityCollectionTest extends TestCase
     {
         $this->array = [
             new Complexity('Class::method', 1),
-            new Complexity('function', 2)
+            new Complexity('function', 2),
         ];
     }
 
