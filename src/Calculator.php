@@ -19,7 +19,15 @@ final class Calculator
     /**
      * @throws RuntimeException
      */
-    public function calculate(string $filename): ComplexityCollection
+    public function calculateForSourceFile(string $sourceFile): ComplexityCollection
+    {
+        return $this->calculateForSourceString(file_get_contents($sourceFile));
+    }
+
+    /**
+     * @throws RuntimeException
+     */
+    public function calculateForSourceString(string $source): ComplexityCollection
     {
         $parser                       = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $traverser                    = new NodeTraverser;
@@ -30,7 +38,7 @@ final class Calculator
         $traverser->addVisitor($complexityCalculatingVisitor);
 
         try {
-            $nodes = $parser->parse(file_get_contents($filename));
+            $nodes = $parser->parse($source);
 
             assert($nodes !== null);
 

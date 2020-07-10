@@ -9,6 +9,7 @@
  */
 namespace SebastianBergmann\Complexity;
 
+use function file_get_contents;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -25,25 +26,49 @@ use PHPUnit\Framework\TestCase;
  */
 final class CalculatorTest extends TestCase
 {
-    public function testCalculatesCyclomaticComplexityOfClassMethod(): void
+    public function testCalculatesCyclomaticComplexityOfClassMethodInSourceFile(): void
     {
-        $result = (new Calculator)->calculate(__DIR__ . '/../_fixture/ExampleClass.php')->asArray();
+        $result = (new Calculator)->calculateForSourceFile(__DIR__ . '/../_fixture/ExampleClass.php')->asArray();
 
         $this->assertSame('SebastianBergmann\Complexity\TestFixture\ExampleClass::method', $result[0]->name());
         $this->assertSame(14, $result[0]->cyclomaticComplexity());
     }
 
-    public function testCalculatesCyclomaticComplexityOfTraitMethod(): void
+    public function testCalculatesCyclomaticComplexityOfTraitMethodInSourceFile(): void
     {
-        $result = (new Calculator)->calculate(__DIR__ . '/../_fixture/ExampleTrait.php')->asArray();
+        $result = (new Calculator)->calculateForSourceFile(__DIR__ . '/../_fixture/ExampleTrait.php')->asArray();
 
         $this->assertSame('SebastianBergmann\Complexity\TestFixture\ExampleTrait::method', $result[0]->name());
         $this->assertSame(14, $result[0]->cyclomaticComplexity());
     }
 
-    public function testCalculatesCyclomaticComplexityOfFunction(): void
+    public function testCalculatesCyclomaticComplexityOfFunctionInSourceFile(): void
     {
-        $result = (new Calculator)->calculate(__DIR__ . '/../_fixture/example_function.php')->asArray();
+        $result = (new Calculator)->calculateForSourceFile(__DIR__ . '/../_fixture/example_function.php')->asArray();
+
+        $this->assertSame('SebastianBergmann\Complexity\TestFixture\example_function', $result[0]->name());
+        $this->assertSame(14, $result[0]->cyclomaticComplexity());
+    }
+
+    public function testCalculatesCyclomaticComplexityOfClassMethodInSourceString(): void
+    {
+        $result = (new Calculator)->calculateForSourceString(file_get_contents(__DIR__ . '/../_fixture/ExampleClass.php'))->asArray();
+
+        $this->assertSame('SebastianBergmann\Complexity\TestFixture\ExampleClass::method', $result[0]->name());
+        $this->assertSame(14, $result[0]->cyclomaticComplexity());
+    }
+
+    public function testCalculatesCyclomaticComplexityOfTraitMethodInSourceString(): void
+    {
+        $result = (new Calculator)->calculateForSourceString(file_get_contents(__DIR__ . '/../_fixture/ExampleTrait.php'))->asArray();
+
+        $this->assertSame('SebastianBergmann\Complexity\TestFixture\ExampleTrait::method', $result[0]->name());
+        $this->assertSame(14, $result[0]->cyclomaticComplexity());
+    }
+
+    public function testCalculatesCyclomaticComplexityOfFunctionInSourceString(): void
+    {
+        $result = (new Calculator)->calculateForSourceString(file_get_contents(__DIR__ . '/../_fixture/example_function.php'))->asArray();
 
         $this->assertSame('SebastianBergmann\Complexity\TestFixture\example_function', $result[0]->name());
         $this->assertSame(14, $result[0]->cyclomaticComplexity());
