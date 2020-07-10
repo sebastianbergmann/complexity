@@ -35,7 +35,8 @@ final class ComplexityCalculatingVisitor extends NodeVisitorAbstract
 
             $this->result[] = new Complexity(
                 $name,
-                $this->cyclomaticComplexity($statements)
+                $this->cyclomaticComplexity($statements),
+                $this->npathComplexity($statements)
             );
         }
     }
@@ -49,6 +50,14 @@ final class ComplexityCalculatingVisitor extends NodeVisitorAbstract
      * @param Stmt[] $statements
      */
     private function cyclomaticComplexity(array $statements): int
+    {
+        return 1;
+    }
+
+    /**
+     * @param Stmt[] $statements
+     */
+    private function npathComplexity(array $statements): int
     {
         return 1;
     }

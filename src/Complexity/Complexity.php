@@ -24,10 +24,16 @@ final class Complexity
      */
     private $cyclomaticComplexity;
 
-    public function __construct(string $name, int $cyclomaticComplexity)
+    /**
+     * @var int
+     */
+    private $npathComplexity;
+
+    public function __construct(string $name, int $cyclomaticComplexity, int $npathComplexity)
     {
         $this->name                 = $name;
         $this->cyclomaticComplexity = $cyclomaticComplexity;
+        $this->npathComplexity      = $npathComplexity;
     }
 
     public function name(): string
@@ -38,5 +44,10 @@ final class Complexity
     public function cyclomaticComplexity(): int
     {
         return $this->cyclomaticComplexity;
+    }
+
+    public function npathComplexity(): int
+    {
+        return $this->npathComplexity;
     }
 }

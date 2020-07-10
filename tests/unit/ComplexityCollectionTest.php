@@ -29,8 +29,8 @@ final class ComplexityCollectionTest extends TestCase
     protected function setUp(): void
     {
         $this->array = [
-            new Complexity('Class::method', 1),
-            new Complexity('function', 2),
+            new Complexity('Class::method', 1, 2),
+            new Complexity('function', 3, 4),
         ];
     }
 
@@ -73,6 +73,16 @@ final class ComplexityCollectionTest extends TestCase
     {
         $collection = ComplexityCollection::fromList($this->array[0], $this->array[1]);
 
-        $this->assertSame(3, $collection->cyclomaticComplexity());
+        $this->assertSame(4, $collection->cyclomaticComplexity());
+    }
+
+    /**
+     * @testdox Has NPath Complexity
+     */
+    public function testHasNpathComplexity(): void
+    {
+        $collection = ComplexityCollection::fromList($this->array[0], $this->array[1]);
+
+        $this->assertSame(6, $collection->npathComplexity());
     }
 }

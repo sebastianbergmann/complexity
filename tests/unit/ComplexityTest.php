@@ -28,8 +28,16 @@ final class ComplexityTest extends TestCase
         $this->assertSame(1, $this->complexity()->cyclomaticComplexity());
     }
 
+    /**
+     * @testdox Has NPath Complexity
+     */
+    public function testHasNpathComplexity(): void
+    {
+        $this->assertSame(1, $this->complexity()->npathComplexity());
+    }
+
     private function complexity(): Complexity
     {
-        return new Complexity('Foo::bar', 1);
+        return new Complexity('Foo::bar', 1, 1);
     }
 }
