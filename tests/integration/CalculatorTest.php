@@ -25,10 +25,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class CalculatorTest extends TestCase
 {
-    /**
-     * @testdox Calculates Cyclomatic Complexity and NPath Complexity of class method
-     */
-    public function testCalculatesComplexityOfClassMethod(): void
+    public function testCalculatesCyclomaticComplexityOfClassMethod(): void
     {
         $result = (new Calculator)->calculate(__DIR__ . '/../_fixture/Example.php')->asArray();
 
