@@ -14,6 +14,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers \SebastianBergmann\Complexity\Calculator
  * @covers \SebastianBergmann\Complexity\ComplexityCalculatingVisitor
+ * @covers \SebastianBergmann\Complexity\CyclomaticComplexityCalculatingVisitor
  * @covers \SebastianBergmann\Complexity\ParentConnectingVisitor
  *
  * @uses \SebastianBergmann\Complexity\Complexity
@@ -32,7 +33,7 @@ final class CalculatorTest extends TestCase
         $result = (new Calculator)->calculate(__DIR__ . '/../_fixture/Example.php')->asArray();
 
         $this->assertSame('SebastianBergmann\Complexity\TestFixture\Example::method', $result[0]->name());
-        $this->assertSame(1, $result[0]->cyclomaticComplexity());
+        $this->assertSame(14, $result[0]->cyclomaticComplexity());
         $this->assertSame(1, $result[0]->npathComplexity());
     }
 }
