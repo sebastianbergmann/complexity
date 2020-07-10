@@ -36,8 +36,7 @@ final class ComplexityCalculatingVisitor extends NodeVisitorAbstract
 
             $this->result[] = new Complexity(
                 $name,
-                $this->cyclomaticComplexity($statements),
-                $this->npathComplexity($statements)
+                $this->cyclomaticComplexity($statements)
             );
         }
     }
@@ -62,23 +61,6 @@ final class ComplexityCalculatingVisitor extends NodeVisitorAbstract
         $traverser->traverse($statements);
 
         return $cyclomaticComplexityCalculatingVisitor->cyclomaticComplexity();
-    }
-
-    /**
-     * @param Stmt[] $statements
-     */
-    private function npathComplexity(array $statements): int
-    {
-        $traverser = new NodeTraverser;
-
-        $npathComplexityCalculatingVisitor = new NpathComplexityCalculatingVisitor;
-
-        $traverser->addVisitor($npathComplexityCalculatingVisitor);
-
-        /* @noinspection UnusedFunctionResultInspection */
-        $traverser->traverse($statements);
-
-        return $npathComplexityCalculatingVisitor->npathComplexity();
     }
 
     private function classMethodName(ClassMethod $node): string

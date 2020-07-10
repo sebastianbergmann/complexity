@@ -69,15 +69,4 @@ final class ComplexityCollection implements Countable, IteratorAggregate
 
         return $cyclomaticComplexity;
     }
-
-    public function npathComplexity(): int
-    {
-        $npathComplexity = 0;
-
-        foreach ($this as $item) {
-            $npathComplexity += $item->npathComplexity();
-        }
-
-        return $npathComplexity;
-    }
 }

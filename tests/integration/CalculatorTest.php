@@ -34,6 +34,5 @@ final class CalculatorTest extends TestCase
 
         $this->assertSame('SebastianBergmann\Complexity\TestFixture\Example::method', $result[0]->name());
         $this->assertSame(14, $result[0]->cyclomaticComplexity());
-        $this->assertSame(1, $result[0]->npathComplexity());
     }
 }
