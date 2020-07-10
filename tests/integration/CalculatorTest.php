@@ -33,6 +33,14 @@ final class CalculatorTest extends TestCase
         $this->assertSame(14, $result[0]->cyclomaticComplexity());
     }
 
+    public function testCalculatesCyclomaticComplexityOfTraitMethod(): void
+    {
+        $result = (new Calculator)->calculate(__DIR__ . '/../_fixture/ExampleTrait.php')->asArray();
+
+        $this->assertSame('SebastianBergmann\Complexity\TestFixture\ExampleTrait::method', $result[0]->name());
+        $this->assertSame(14, $result[0]->cyclomaticComplexity());
+    }
+
     public function testCalculatesCyclomaticComplexityOfFunction(): void
     {
         $result = (new Calculator)->calculate(__DIR__ . '/../_fixture/example_function.php')->asArray();

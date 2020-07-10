@@ -17,6 +17,7 @@ use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Function_;
+use PhpParser\Node\Stmt\Trait_;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitorAbstract;
 
@@ -73,13 +74,13 @@ final class ComplexityCalculatingVisitor extends NodeVisitorAbstract
 
     private function classMethodName(ClassMethod $node): string
     {
-        $class = $node->getAttribute('parent');
+        $parent = $node->getAttribute('parent');
 
-        assert($class instanceof Class_);
-        assert(isset($class->namespacedName));
-        assert($class->namespacedName instanceof Name);
+        assert($parent instanceof Class_ || $parent instanceof Trait_);
+        assert(isset($parent->namespacedName));
+        assert($parent->namespacedName instanceof Name);
 
-        return $class->namespacedName->toString() . '::' . $node->name->toString();
+        return $parent->namespacedName->toString() . '::' . $node->name->toString();
     }
 
     private function functionName(Function_ $node): string
