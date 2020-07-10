@@ -9,7 +9,7 @@
  */
 namespace SebastianBergmann\Complexity\TestFixture;
 
-function f(): void
+function example_function(): void
 {
     if (true || false) {
         if (true && false) {

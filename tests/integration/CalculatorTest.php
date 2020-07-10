@@ -27,17 +27,17 @@ final class CalculatorTest extends TestCase
 {
     public function testCalculatesCyclomaticComplexityOfClassMethod(): void
     {
-        $result = (new Calculator)->calculate(__DIR__ . '/../_fixture/Example.php')->asArray();
+        $result = (new Calculator)->calculate(__DIR__ . '/../_fixture/ExampleClass.php')->asArray();
 
-        $this->assertSame('SebastianBergmann\Complexity\TestFixture\Example::method', $result[0]->name());
+        $this->assertSame('SebastianBergmann\Complexity\TestFixture\ExampleClass::method', $result[0]->name());
         $this->assertSame(14, $result[0]->cyclomaticComplexity());
     }
 
     public function testCalculatesCyclomaticComplexityOfFunction(): void
     {
-        $result = (new Calculator)->calculate(__DIR__ . '/../_fixture/function.php')->asArray();
+        $result = (new Calculator)->calculate(__DIR__ . '/../_fixture/example_function.php')->asArray();
 
-        $this->assertSame('SebastianBergmann\Complexity\TestFixture\f', $result[0]->name());
+        $this->assertSame('SebastianBergmann\Complexity\TestFixture\example_function', $result[0]->name());
         $this->assertSame(14, $result[0]->cyclomaticComplexity());
     }
 }

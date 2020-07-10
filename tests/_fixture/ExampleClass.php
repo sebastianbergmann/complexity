@@ -9,7 +9,7 @@
  */
 namespace SebastianBergmann\Complexity\TestFixture;
 
-final class Example
+final class ExampleClass
 {
     public function method(): void
     {
