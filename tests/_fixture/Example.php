@@ -14,7 +14,11 @@ final class Example
     public function method(): void
     {
         if (true || false) {
-            if (true || false) {
+            if (true && false) {
+                for ($i = 0; $i <= 1; $i++) {
+                    $a = true ? 'foo' : 'bar';
+                }
+
                 foreach (range(0, 1) as $i) {
                     switch ($i) {
                         case 0:
@@ -27,10 +31,16 @@ final class Example
                     }
                 }
             }
-        } else {
+        } elseif (null) {
             try {
             } catch (Throwable $t) {
             }
         }
+
+        while (true) {
+        }
+
+        do {
+        } while (false);
     }
 }
