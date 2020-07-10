@@ -16,6 +16,7 @@ use PhpParser\Node\Name;
 use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
+use PhpParser\Node\Stmt\Function_;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitorAbstract;
 
@@ -28,17 +29,24 @@ final class ComplexityCalculatingVisitor extends NodeVisitorAbstract
 
     public function enterNode(Node $node): void
     {
-        if ($node instanceof ClassMethod) {
-            $name       = $this->classMethodName($node);
-            $statements = $node->getStmts();
-
-            assert(is_array($statements));
-
-            $this->result[] = new Complexity(
-                $name,
-                $this->cyclomaticComplexity($statements)
-            );
+        if (!$node instanceof ClassMethod && !$node instanceof Function_) {
+            return;
         }
+
+        if ($node instanceof ClassMethod) {
+            $name = $this->classMethodName($node);
+        } else {
+            $name = $this->functionName($node);
+        }
+
+        $statements = $node->getStmts();
+
+        assert(is_array($statements));
+
+        $this->result[] = new Complexity(
+            $name,
+            $this->cyclomaticComplexity($statements)
+        );
     }
 
     public function result(): ComplexityCollection
@@ -72,5 +80,13 @@ final class ComplexityCalculatingVisitor extends NodeVisitorAbstract
         assert($class->namespacedName instanceof Name);
 
         return $class->namespacedName->toString() . '::' . $node->name->toString();
+    }
+
+    private function functionName(Function_ $node): string
+    {
+        assert(isset($node->namespacedName));
+        assert($node->namespacedName instanceof Name);
+
+        return $node->namespacedName->toString();
     }
 }
