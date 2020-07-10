@@ -10,8 +10,10 @@
 namespace SebastianBergmann\Complexity;
 
 use function assert;
+use function is_array;
 use PhpParser\Node;
 use PhpParser\Node\Name;
+use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\NodeVisitorAbstract;
@@ -26,11 +28,14 @@ final class ComplexityCalculatingVisitor extends NodeVisitorAbstract
     public function enterNode(Node $node): void
     {
         if ($node instanceof ClassMethod) {
-            $name = $this->classMethodName($node);
+            $name       = $this->classMethodName($node);
+            $statements = $node->getStmts();
+
+            assert(is_array($statements));
 
             $this->result[] = new Complexity(
                 $name,
-                $this->cyclomaticComplexity($node->getStmts())
+                $this->cyclomaticComplexity($statements)
             );
         }
     }
@@ -40,7 +45,10 @@ final class ComplexityCalculatingVisitor extends NodeVisitorAbstract
         return ComplexityCollection::fromList(...$this->result);
     }
 
-    private function cyclomaticComplexity(?array $statements): int
+    /**
+     * @param Stmt[] $statements
+     */
+    private function cyclomaticComplexity(array $statements): int
     {
         return 1;
     }
