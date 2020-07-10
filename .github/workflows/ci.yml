@@ -58,9 +58,6 @@ jobs:
           coverage: none
           extensions: intl
 
-      - name: Run roave/backward-compatibility-check
-        run: ./tools/roave-backward-compatibility-check --from=1.0.0
-
   tests:
     name: "Tests"
 
