@@ -58,7 +58,7 @@ final class Calculator
     public function calculateForAbstractSyntaxTree(array $nodes): ComplexityCollection
     {
         $traverser                    = new NodeTraverser;
-        $complexityCalculatingVisitor = new ComplexityCalculatingVisitor;
+        $complexityCalculatingVisitor = new ComplexityCalculatingVisitor(true);
 
         $traverser->addVisitor(new NameResolver);
         $traverser->addVisitor(new ParentConnectingVisitor);

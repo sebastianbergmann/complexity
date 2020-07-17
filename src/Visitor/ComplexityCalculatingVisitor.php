@@ -28,7 +28,17 @@ final class ComplexityCalculatingVisitor extends NodeVisitorAbstract
      */
     private $result = [];
 
-    public function enterNode(Node $node)
+    /**
+     * @var bool
+     */
+    private $shortCircuitTraversal;
+
+    public function __construct(bool $shortCircuitTraversal)
+    {
+        $this->shortCircuitTraversal = $shortCircuitTraversal;
+    }
+
+    public function enterNode(Node $node): ?int
     {
         if (!$node instanceof ClassMethod && !$node instanceof Function_) {
             return null;
@@ -49,7 +59,11 @@ final class ComplexityCalculatingVisitor extends NodeVisitorAbstract
             $this->cyclomaticComplexity($statements)
         );
 
-        return NodeTraverser::DONT_TRAVERSE_CHILDREN;
+        if ($this->shortCircuitTraversal) {
+            return NodeTraverser::DONT_TRAVERSE_CHILDREN;
+        }
+
+        return null;
     }
 
     public function result(): ComplexityCollection
