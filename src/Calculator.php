@@ -13,6 +13,7 @@ use PhpParser\Error;
 use PhpParser\Node;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
+use PhpParser\NodeVisitor\ParentConnectingVisitor as PhpParserParentConnectingVisitor;
 use PhpParser\ParserFactory;
 
 final class Calculator
@@ -61,7 +62,7 @@ final class Calculator
         $complexityCalculatingVisitor = new ComplexityCalculatingVisitor(true);
 
         $traverser->addVisitor(new NameResolver);
-        $traverser->addVisitor(new ParentConnectingVisitor);
+        $traverser->addVisitor(new PhpParserParentConnectingVisitor);
         $traverser->addVisitor($complexityCalculatingVisitor);
 
         try {
