@@ -16,6 +16,7 @@ use PhpParser\NodeVisitorAbstract;
 
 /**
  * @see https://github.com/nikic/PHP-Parser/blob/v4.6.0/doc/component/FAQ.markdown#how-can-the-parent-of-a-node-be-obtained
+ * @deprecated since 1.1 and will be removed in 2.0. Use PhpParser\NodeVisitor\ParentConnectingVisitor instead.
  */
 final class ParentConnectingVisitor extends NodeVisitorAbstract
 {
