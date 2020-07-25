@@ -17,7 +17,6 @@ use PHPUnit\Framework\TestCase;
  * @covers \SebastianBergmann\Complexity\Calculator
  * @covers \SebastianBergmann\Complexity\ComplexityCalculatingVisitor
  * @covers \SebastianBergmann\Complexity\CyclomaticComplexityCalculatingVisitor
- * @covers \SebastianBergmann\Complexity\ParentConnectingVisitor
  *
  * @uses \SebastianBergmann\Complexity\Complexity
  * @uses \SebastianBergmann\Complexity\ComplexityCollection

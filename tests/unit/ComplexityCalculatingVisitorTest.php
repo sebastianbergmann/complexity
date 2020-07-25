@@ -13,6 +13,7 @@ use function file_get_contents;
 use PhpParser\Node;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
+use PhpParser\NodeVisitor\ParentConnectingVisitor;
 use PhpParser\NodeVisitorAbstract;
 use PhpParser\ParserFactory;
 use PHPUnit\Framework\TestCase;
@@ -24,7 +25,6 @@ use PHPUnit\Framework\TestCase;
  * @uses \SebastianBergmann\Complexity\ComplexityCollection
  * @uses \SebastianBergmann\Complexity\ComplexityCollectionIterator
  * @uses \SebastianBergmann\Complexity\CyclomaticComplexityCalculatingVisitor
- * @uses \SebastianBergmann\Complexity\ParentConnectingVisitor
  *
  * @small
  */
