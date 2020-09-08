@@ -15,7 +15,7 @@
         "issues": "https://github.com/sebastianbergmann/complexity/issues"
     },
     "require": {
-        "php": "^7.3 || ^8.0",
+        "php": ">=7.3",
         "nikic/php-parser": "^4.7"
     },
     "require-dev": {
