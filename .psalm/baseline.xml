@@ -1,9 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="3.13.1@afd8874a9e4562eac42a02de90e42e430c3a1db1">
-  <file src="src/Visitor/ComplexityCalculatingVisitor.php">
-    <RedundantConditionGivenDocblockType occurrences="2">
-      <code>assert($parent-&gt;namespacedName instanceof Name)</code>
-      <code>assert($node-&gt;namespacedName instanceof Name)</code>
-    </RedundantConditionGivenDocblockType>
-  </file>
-</files>
+<files psalm-version="4.0.1@b1e2e30026936ef8d5bf6a354d1c3959b6231f44"/>
