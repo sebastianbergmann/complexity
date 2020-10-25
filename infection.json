@@ -10,6 +10,12 @@
             "ignore": [
                 "SebastianBergmann\\Complexity\\Calculator::calculateForAbstractSyntaxTree"
             ]
+        },
+        "InstanceOf_": {
+            "ignore": [
+                "SebastianBergmann\\Complexity\\ComplexityCalculatingVisitor::classMethodName",
+                "SebastianBergmann\\Complexity\\ComplexityCalculatingVisitor::functionName"
+            ]
         }
     },
     "minMsi": 100,
