@@ -14,16 +14,18 @@
     "support": {
         "issues": "https://github.com/sebastianbergmann/complexity/issues"
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {
-        "php": ">=7.3",
-        "nikic/php-parser": "^4.7"
+        "php": ">=7.4",
+        "nikic/php-parser": "^4.10"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.3"
+        "phpunit/phpunit": "^10.0"
     },
     "config": {
         "platform": {
-            "php": "7.3.0"
+            "php": "7.4.0"
         },
         "optimize-autoloader": true,
         "sort-packages": true
@@ -35,7 +37,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.0-dev"
+            "dev-master": "3.0-dev"
         }
     }
 }

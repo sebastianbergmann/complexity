@@ -27,10 +27,7 @@ use PhpParser\NodeVisitorAbstract;
 
 final class CyclomaticComplexityCalculatingVisitor extends NodeVisitorAbstract
 {
-    /**
-     * @var int
-     */
-    private $cyclomaticComplexity = 1;
+    private int $cyclomaticComplexity = 1;
 
     public function enterNode(Node $node): void
     {

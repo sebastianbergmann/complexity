@@ -24,7 +24,7 @@ final class ComplexityCollectionTest extends TestCase
     /**
      * @psalm-var list<Complexity>
      */
-    private $array;
+    private array $array;
 
     protected function setUp(): void
     {

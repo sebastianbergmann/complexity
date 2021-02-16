@@ -14,15 +14,9 @@ namespace SebastianBergmann\Complexity;
  */
 final class Complexity
 {
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
-    /**
-     * @var int
-     */
-    private $cyclomaticComplexity;
+    private int $cyclomaticComplexity;
 
     public function __construct(string $name, int $cyclomaticComplexity)
     {
