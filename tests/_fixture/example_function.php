@@ -11,8 +11,8 @@ namespace SebastianBergmann\Complexity\TestFixture;
 
 function example_function(): void
 {
-    if (true || false) {
-        if (true && false) {
+    if (true or false) {
+        if (true and false) {
             for ($i = 0; $i <= 1; $i++) {
                 $a = true ? 'foo' : 'bar';
             }
