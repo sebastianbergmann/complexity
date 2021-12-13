@@ -5,4 +5,14 @@
       <code>$items</code>
     </MixedArgumentTypeCoercion>
   </file>
+  <file src="src/Visitor/ComplexityCalculatingVisitor.php">
+    <RedundantConditionGivenDocblockType occurrences="6">
+      <code>assert($node-&gt;namespacedName instanceof Name)</code>
+      <code>assert($node-&gt;namespacedName instanceof Name)</code>
+      <code>assert($parent-&gt;namespacedName instanceof Name)</code>
+      <code>assert($parent-&gt;namespacedName instanceof Name)</code>
+      <code>assert(isset($node-&gt;namespacedName))</code>
+      <code>assert(isset($parent-&gt;namespacedName))</code>
+    </RedundantConditionGivenDocblockType>
+  </file>
 </files>
