@@ -17,7 +17,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": ">=8.0",
+        "php": ">=8.1",
         "nikic/php-parser": "^4.10"
     },
     "require-dev": {
@@ -25,7 +25,7 @@
     },
     "config": {
         "platform": {
-            "php": "8.0.0"
+            "php": "8.1.0"
         },
         "optimize-autoloader": true,
         "sort-packages": true
