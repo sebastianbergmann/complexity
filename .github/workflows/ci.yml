@@ -86,35 +86,3 @@ jobs:
           CODECOV_TOKEN: "${{ secrets.CODECOV_TOKEN }}"
         run: "bash <(curl -s https://codecov.io/bash) || true"
 
-  mutation-tests:
-    name: "Mutation Tests"
-
-    runs-on: "ubuntu-latest"
-
-    strategy:
-      matrix:
-        php-version:
-          - "8.1"
-
-    steps:
-      - name: "Checkout"
-        uses: "actions/checkout@v3"
-
-      - name: "Install PHP with extensions"
-        uses: "shivammathur/setup-php@v2"
-        with:
-          php-version: "${{ matrix.php-version }}"
-          coverage: "pcov"
-
-      - name: "Cache dependencies installed with composer"
-        uses: "actions/cache@v2"
-        with:
-          path: "~/.composer/cache"
-          key: "php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}"
-          restore-keys: "php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-"
-
-      - name: "Install dependencies with composer"
-        run: "./tools/composer update --no-ansi --no-interaction --no-progress"
-
-      - name: "Run mutation tests with infection/infection"
-        run: "./tools/infection --show-mutations --only-covered"
