@@ -45,7 +45,7 @@ final class ComplexityCalculatingVisitorTest extends TestCase
 
         $complexityCalculatingVisitor = new ComplexityCalculatingVisitor($shortCircuitTraversal);
 
-        $shortCircuitVisitor              = new class extends NodeVisitorAbstract {
+        $shortCircuitVisitor = new class extends NodeVisitorAbstract {
             private $numberOfNodesVisited = 0;
 
             public function enterNode(Node $node): void
