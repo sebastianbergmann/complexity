@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="dev-master@">
   <file src="src/Complexity/ComplexityCollection.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$items</code>
+    </ArgumentTypeCoercion>
     <MissingTemplateParam occurrences="1">
       <code>IteratorAggregate</code>
     </MissingTemplateParam>
