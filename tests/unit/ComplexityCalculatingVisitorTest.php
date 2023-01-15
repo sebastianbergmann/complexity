@@ -32,6 +32,14 @@ use PHPUnit\Framework\TestCase;
  */
 final class ComplexityCalculatingVisitorTest extends TestCase
 {
+    public static function shortCircuitTraversalProvider(): array
+    {
+        return [
+            'short-circuit traversal'    => [true],
+            'no short-circuit traversal' => [false],
+        ];
+    }
+
     /**
      * @dataProvider shortCircuitTraversalProvider
      */
@@ -74,14 +82,6 @@ final class ComplexityCalculatingVisitorTest extends TestCase
         } else {
             $this->assertSame(70, $shortCircuitVisitor->numberOfNodesVisited());
         }
-    }
-
-    public function shortCircuitTraversalProvider(): array
-    {
-        return [
-            'short-circuit traversal'    => [true],
-            'no short-circuit traversal' => [false],
-        ];
     }
 
     private function parser(): Parser
