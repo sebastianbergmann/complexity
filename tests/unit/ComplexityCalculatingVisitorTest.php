@@ -18,18 +18,18 @@ use PhpParser\NodeVisitor\ParentConnectingVisitor;
 use PhpParser\NodeVisitorAbstract;
 use PhpParser\Parser;
 use PhpParser\ParserFactory;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \SebastianBergmann\Complexity\ComplexityCalculatingVisitor
- *
- * @uses \SebastianBergmann\Complexity\Complexity
- * @uses \SebastianBergmann\Complexity\ComplexityCollection
- * @uses \SebastianBergmann\Complexity\ComplexityCollectionIterator
- * @uses \SebastianBergmann\Complexity\CyclomaticComplexityCalculatingVisitor
- *
- * @small
- */
+#[CoversClass(ComplexityCalculatingVisitor::class)]
+#[UsesClass(Complexity::class)]
+#[UsesClass(ComplexityCollection::class)]
+#[UsesClass(ComplexityCollectionIterator::class)]
+#[UsesClass(CyclomaticComplexityCalculatingVisitor::class)]
+#[Small]
 final class ComplexityCalculatingVisitorTest extends TestCase
 {
     public static function shortCircuitTraversalProvider(): array
@@ -40,9 +40,7 @@ final class ComplexityCalculatingVisitorTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider shortCircuitTraversalProvider
-     */
+    #[DataProvider('shortCircuitTraversalProvider')]
     public function testCalculatesComplexityForAbstractSyntaxTree(bool $shortCircuitTraversal): void
     {
         $nodes = $this->parser()->parse(
@@ -55,7 +53,7 @@ final class ComplexityCalculatingVisitorTest extends TestCase
 
         $shortCircuitVisitor = new class extends NodeVisitorAbstract
         {
-            private $numberOfNodesVisited = 0;
+            private int $numberOfNodesVisited = 0;
 
             public function enterNode(Node $node): void
             {

@@ -9,16 +9,16 @@
  */
 namespace SebastianBergmann\Complexity;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \SebastianBergmann\Complexity\ComplexityCollection
- * @covers \SebastianBergmann\Complexity\ComplexityCollectionIterator
- *
- * @uses \SebastianBergmann\Complexity\Complexity
- *
- * @small
- */
+#[CoversClass(ComplexityCollection::class)]
+#[CoversClass(ComplexityCollectionIterator::class)]
+#[UsesClass(Complexity::class)]
+#[Small]
 final class ComplexityCollectionTest extends TestCase
 {
     /**
@@ -34,9 +34,7 @@ final class ComplexityCollectionTest extends TestCase
         ];
     }
 
-    /**
-     * @testdox Can be created from list of Complexity objects
-     */
+    #[TestDox('Can be created from list of Complexity objects')]
     public function testCanBeCreatedFromListOfObjects(): void
     {
         $collection = ComplexityCollection::fromList($this->array[0], $this->array[1]);

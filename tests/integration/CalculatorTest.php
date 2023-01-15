@@ -14,19 +14,18 @@ use function file_get_contents;
 use PhpParser\Lexer;
 use PhpParser\Parser;
 use PhpParser\ParserFactory;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Medium;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \SebastianBergmann\Complexity\Calculator
- * @covers \SebastianBergmann\Complexity\ComplexityCalculatingVisitor
- * @covers \SebastianBergmann\Complexity\CyclomaticComplexityCalculatingVisitor
- *
- * @uses \SebastianBergmann\Complexity\Complexity
- * @uses \SebastianBergmann\Complexity\ComplexityCollection
- * @uses \SebastianBergmann\Complexity\ComplexityCollectionIterator
- *
- * @medium
- */
+#[CoversClass(Calculator::class)]
+#[CoversClass(ComplexityCalculatingVisitor::class)]
+#[CoversClass(CyclomaticComplexityCalculatingVisitor::class)]
+#[UsesClass(Complexity::class)]
+#[UsesClass(ComplexityCollection::class)]
+#[UsesClass(ComplexityCollectionIterator::class)]
+#[Medium]
 final class CalculatorTest extends TestCase
 {
     public function testCalculatesCyclomaticComplexityOfClassMethodInSourceFile(): void

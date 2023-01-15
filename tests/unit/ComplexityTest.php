@@ -9,13 +9,12 @@
  */
 namespace SebastianBergmann\Complexity;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \SebastianBergmann\Complexity\Complexity
- *
- * @small
- */
+#[CoversClass(Complexity::class)]
+#[Small]
 final class ComplexityTest extends TestCase
 {
     public function testHasName(): void

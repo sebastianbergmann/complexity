@@ -14,13 +14,12 @@ use PhpParser\Lexer;
 use PhpParser\NodeTraverser;
 use PhpParser\Parser;
 use PhpParser\ParserFactory;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \SebastianBergmann\Complexity\CyclomaticComplexityCalculatingVisitor
- *
- * @small
- */
+#[CoversClass(CyclomaticComplexityCalculatingVisitor::class)]
+#[Small]
 final class CyclomaticComplexityCalculatingVisitorTest extends TestCase
 {
     public function testCalculatesCyclomaticComplexityForAbstractSyntaxTree(): void
