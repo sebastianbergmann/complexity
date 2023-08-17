@@ -50,6 +50,10 @@ final class ComplexityCalculatingVisitor extends NodeVisitorAbstract
 
         assert(is_array($statements));
 
+        if (! $statements) {
+            return null;
+        }
+
         $this->result[] = new Complexity(
             $name,
             $this->cyclomaticComplexity($statements)

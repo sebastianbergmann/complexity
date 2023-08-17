@@ -83,6 +83,44 @@ final class ComplexityCalculatingVisitorTest extends TestCase
         }
     }
 
+    #[DataProvider('shortCircuitTraversalProvider')]
+    public function testCalculatesComplexityForAbstractSyntaxTreeInterface(bool $shortCircuitTraversal): void
+    {
+        $nodes = $this->parser()->parse(
+            file_get_contents(__DIR__ . '/../_fixture/ExampleInterface.php')
+        );
+
+        $traverser = new NodeTraverser;
+
+        $complexityCalculatingVisitor = new ComplexityCalculatingVisitor($shortCircuitTraversal);
+
+        $shortCircuitVisitor = new class extends NodeVisitorAbstract
+        {
+            private int $numberOfNodesVisited = 0;
+
+            public function enterNode(Node $node): void
+            {
+                $this->numberOfNodesVisited++;
+            }
+
+            public function numberOfNodesVisited(): int
+            {
+                return $this->numberOfNodesVisited;
+            }
+        };
+
+        $traverser->addVisitor(new NameResolver);
+        $traverser->addVisitor(new ParentConnectingVisitor);
+        $traverser->addVisitor($complexityCalculatingVisitor);
+        $traverser->addVisitor($shortCircuitVisitor);
+
+        /* @noinspection UnusedFunctionResultInspection */
+        $traverser->traverse($nodes);
+
+        $this->assertSame(0, $complexityCalculatingVisitor->result()->cyclomaticComplexity());
+        $this->assertSame(11, $shortCircuitVisitor->numberOfNodesVisited());
+    }
+
     private function parser(): Parser
     {
         return (new ParserFactory)->create(ParserFactory::PREFER_PHP7, new Lexer);
