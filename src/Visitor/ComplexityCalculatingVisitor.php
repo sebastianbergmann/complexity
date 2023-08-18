@@ -17,6 +17,7 @@ use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Function_;
+use PhpParser\Node\Stmt\Interface_;
 use PhpParser\Node\Stmt\Trait_;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitorAbstract;
@@ -41,6 +42,10 @@ final class ComplexityCalculatingVisitor extends NodeVisitorAbstract
         }
 
         if ($node instanceof ClassMethod) {
+            if ($node->getAttribute('parent') instanceof Interface_) {
+                return null;
+            }
+
             $name = $this->classMethodName($node);
         } else {
             $name = $this->functionName($node);
