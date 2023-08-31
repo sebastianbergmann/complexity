@@ -46,6 +46,10 @@ final class ComplexityCalculatingVisitor extends NodeVisitorAbstract
                 return null;
             }
 
+            if ($node->isAbstract()) {
+                return null;
+            }
+
             $name = $this->classMethodName($node);
         } else {
             $name = $this->functionName($node);

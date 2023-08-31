@@ -9,7 +9,7 @@
  */
 namespace SebastianBergmann\Complexity\TestFixture;
 
-final class ExampleClass
+abstract class ExampleClass
 {
     public function method(): void
     {
@@ -43,4 +43,6 @@ final class ExampleClass
         do {
         } while (false);
     }
+
+    abstract public function abstractMethod(): void;
 }

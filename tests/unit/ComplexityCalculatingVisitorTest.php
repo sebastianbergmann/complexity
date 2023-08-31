@@ -77,9 +77,9 @@ final class ComplexityCalculatingVisitorTest extends TestCase
         $this->assertSame(14, $complexityCalculatingVisitor->result()->cyclomaticComplexity());
 
         if ($shortCircuitTraversal) {
-            $this->assertSame(9, $shortCircuitVisitor->numberOfNodesVisited());
+            $this->assertSame(12, $shortCircuitVisitor->numberOfNodesVisited());
         } else {
-            $this->assertSame(70, $shortCircuitVisitor->numberOfNodesVisited());
+            $this->assertSame(73, $shortCircuitVisitor->numberOfNodesVisited());
         }
     }
 
