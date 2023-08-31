@@ -74,6 +74,8 @@ final class ComplexityCalculatingVisitor extends NodeVisitorAbstract
 
     /**
      * @param Stmt[] $statements
+     *
+     * @psalm-return positive-int
      */
     private function cyclomaticComplexity(array $statements): int
     {
@@ -89,6 +91,9 @@ final class ComplexityCalculatingVisitor extends NodeVisitorAbstract
         return $cyclomaticComplexityCalculatingVisitor->cyclomaticComplexity();
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     private function classMethodName(ClassMethod $node): string
     {
         $parent = $node->getAttribute('parent');
@@ -100,11 +105,18 @@ final class ComplexityCalculatingVisitor extends NodeVisitorAbstract
         return $parent->namespacedName->toString() . '::' . $node->name->toString();
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     private function functionName(Function_ $node): string
     {
         assert(isset($node->namespacedName));
         assert($node->namespacedName instanceof Name);
 
-        return $node->namespacedName->toString();
+        $functionName = $node->namespacedName->toString();
+
+        assert($functionName !== '');
+
+        return $functionName;
     }
 }

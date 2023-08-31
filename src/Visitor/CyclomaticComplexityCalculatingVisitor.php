@@ -26,6 +26,9 @@ use PhpParser\NodeVisitorAbstract;
 
 final class CyclomaticComplexityCalculatingVisitor extends NodeVisitorAbstract
 {
+    /**
+     * @psalm-var positive-int
+     */
     private int $cyclomaticComplexity = 1;
 
     public function enterNode(Node $node): void
@@ -47,6 +50,9 @@ final class CyclomaticComplexityCalculatingVisitor extends NodeVisitorAbstract
         }
     }
 
+    /**
+     * @psalm-return positive-int
+     */
     public function cyclomaticComplexity(): int
     {
         return $this->cyclomaticComplexity;
