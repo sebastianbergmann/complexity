@@ -11,12 +11,18 @@
          failOnWarning="true"
          colors="true">
     <testsuites>
-        <testsuite name="default">
-            <directory>tests</directory>
+        <testsuite name="unit">
+            <directory>tests/unit</directory>
+        </testsuite>
+
+        <testsuite name="integration">
+            <directory>tests/integration</directory>
         </testsuite>
     </testsuites>
 
-    <source>
+    <source restrictDeprecations="true"
+            restrictNotices="true"
+            restrictWarnings="true">
         <include>
             <directory>src</directory>
         </include>
