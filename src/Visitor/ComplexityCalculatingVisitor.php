@@ -57,7 +57,7 @@ final class ComplexityCalculatingVisitor extends NodeVisitorAbstract
 
         $this->result[] = new Complexity(
             $name,
-            $this->cyclomaticComplexity($statements)
+            $this->cyclomaticComplexity($statements),
         );
 
         if ($this->shortCircuitTraversal) {

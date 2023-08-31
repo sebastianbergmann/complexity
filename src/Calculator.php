@@ -47,7 +47,7 @@ final class Calculator
             throw new RuntimeException(
                 $error->getMessage(),
                 $error->getCode(),
-                $error
+                $error,
             );
         }
         // @codeCoverageIgnoreEnd
@@ -75,7 +75,7 @@ final class Calculator
             throw new RuntimeException(
                 $error->getMessage(),
                 $error->getCode(),
-                $error
+                $error,
             );
         }
         // @codeCoverageIgnoreEnd

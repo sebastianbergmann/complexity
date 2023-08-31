@@ -25,7 +25,7 @@ final class CyclomaticComplexityCalculatingVisitorTest extends TestCase
     public function testCalculatesCyclomaticComplexityForAbstractSyntaxTree(): void
     {
         $nodes = $this->parser()->parse(
-            file_get_contents(__DIR__ . '/../_fixture/example_function.php')
+            file_get_contents(__DIR__ . '/../_fixture/example_function.php'),
         );
 
         $traverser = new NodeTraverser;
