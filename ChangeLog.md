@@ -7,6 +7,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 ### Added
 
 * `Complexity::isFunction()` and `Complexity::isMethod()`
+* `ComplexityCollection::cyclomaticComplexityMinimum()`, `ComplexityCollection::cyclomaticComplexityMaximum()`, `ComplexityCollection::cyclomaticComplexityAverage()`, and `ComplexityCollection::cyclomaticComplexityMedian()`
 * `ComplexityCollection::isFunction()` and `ComplexityCollection::isMethod()`
 * `ComplexityCollection::mergeWith()`
 

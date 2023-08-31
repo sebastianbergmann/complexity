@@ -74,6 +74,38 @@ final class ComplexityCollectionTest extends TestCase
         $this->assertSame(3, $collection->cyclomaticComplexity());
     }
 
+    public function testHasCyclomaticComplexityMinimum(): void
+    {
+        $collection = ComplexityCollection::fromList($this->array[0], $this->array[1]);
+
+        $this->assertSame(1, $collection->cyclomaticComplexityMinimum());
+    }
+
+    public function testHasCyclomaticComplexityMaximum(): void
+    {
+        $collection = ComplexityCollection::fromList($this->array[0], $this->array[1]);
+
+        $this->assertSame(2, $collection->cyclomaticComplexityMaximum());
+    }
+
+    public function testHasCyclomaticComplexityAverage(): void
+    {
+        $collection = ComplexityCollection::fromList($this->array[0], $this->array[1]);
+
+        $this->assertSame(1.5, $collection->cyclomaticComplexityAverage());
+    }
+
+    public function testHasCyclomaticComplexityMedian(): void
+    {
+        $collection = ComplexityCollection::fromList($this->array[0], $this->array[1]);
+
+        $this->assertSame(1.5, $collection->cyclomaticComplexityMedian());
+
+        $collection = ComplexityCollection::fromList($this->array[0], $this->array[1], $this->array[0]);
+
+        $this->assertSame(1.0, $collection->cyclomaticComplexityMedian());
+    }
+
     public function testCanBeMerged(): void
     {
         $a = ComplexityCollection::fromList($this->array[0]);
