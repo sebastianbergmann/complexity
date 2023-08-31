@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="dev-master@">
+<files psalm-version="5.15.0@5c774aca4746caf3d239d9c8cadb9f882ca29352">
   <file src="src/Complexity/ComplexityCollection.php">
-    <ArgumentTypeCoercion occurrences="1">
+    <ArgumentTypeCoercion>
       <code>$items</code>
     </ArgumentTypeCoercion>
-    <MissingTemplateParam occurrences="1">
+    <MissingTemplateParam>
       <code>IteratorAggregate</code>
     </MissingTemplateParam>
   </file>
   <file src="src/Complexity/ComplexityCollectionIterator.php">
-    <MissingTemplateParam occurrences="1">
+    <MissingTemplateParam>
       <code>Iterator</code>
     </MissingTemplateParam>
   </file>
   <file src="src/Visitor/ComplexityCalculatingVisitor.php">
-    <RedundantConditionGivenDocblockType occurrences="2">
-      <code>assert($node-&gt;namespacedName instanceof Name)</code>
-      <code>assert($parent-&gt;namespacedName instanceof Name)</code>
+    <RedundantConditionGivenDocblockType>
+      <code><![CDATA[assert($node->namespacedName instanceof Name)]]></code>
+      <code><![CDATA[assert($parent->namespacedName instanceof Name)]]></code>
     </RedundantConditionGivenDocblockType>
   </file>
 </files>
