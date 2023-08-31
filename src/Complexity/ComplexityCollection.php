@@ -9,7 +9,9 @@
  */
 namespace SebastianBergmann\Complexity;
 
+use function array_filter;
 use function array_merge;
+use function array_values;
 use function count;
 use Countable;
 use IteratorAggregate;
@@ -75,6 +77,30 @@ final class ComplexityCollection implements Countable, IteratorAggregate
         }
 
         return $cyclomaticComplexity;
+    }
+
+    public function isFunction(): self
+    {
+        return new self(
+            array_values(
+                array_filter(
+                    $this->items,
+                    static fn (Complexity $complexity): bool => $complexity->isFunction(),
+                ),
+            ),
+        );
+    }
+
+    public function isMethod(): self
+    {
+        return new self(
+            array_values(
+                array_filter(
+                    $this->items,
+                    static fn (Complexity $complexity): bool => $complexity->isMethod(),
+                ),
+            ),
+        );
     }
 
     public function mergeWith(self $other): self

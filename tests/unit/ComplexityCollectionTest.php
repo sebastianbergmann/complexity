@@ -89,4 +89,12 @@ final class ComplexityCollectionTest extends TestCase
             $c->asArray(),
         );
     }
+
+    public function testCanBeFiltered(): void
+    {
+        $collection = ComplexityCollection::fromList($this->array[0], $this->array[1]);
+
+        $this->assertTrue($collection->isFunction()->asArray()[0]->isFunction());
+        $this->assertTrue($collection->isMethod()->asArray()[0]->isMethod());
+    }
 }
