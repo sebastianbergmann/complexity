@@ -19,15 +19,32 @@ final class ComplexityTest extends TestCase
 {
     public function testHasName(): void
     {
-        $this->assertSame('Foo::bar', $this->complexity()->name());
+        $this->assertSame('Foo::bar', $this->complexityForMethod()->name());
     }
 
     public function testHasCyclomaticComplexity(): void
     {
-        $this->assertSame(1, $this->complexity()->cyclomaticComplexity());
+        $this->assertSame(1, $this->complexityForMethod()->cyclomaticComplexity());
     }
 
-    private function complexity(): Complexity
+    public function testCanBeFunction(): void
+    {
+        $this->assertTrue($this->complexityForFunction()->isFunction());
+        $this->assertFalse($this->complexityForFunction()->isMethod());
+    }
+
+    public function testCanBeMethod(): void
+    {
+        $this->assertTrue($this->complexityForMethod()->isMethod());
+        $this->assertFalse($this->complexityForMethod()->isFunction());
+    }
+
+    private function complexityForFunction(): Complexity
+    {
+        return new Complexity('foo', 1);
+    }
+
+    private function complexityForMethod(): Complexity
     {
         return new Complexity('Foo::bar', 1);
     }

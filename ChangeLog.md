@@ -6,6 +6,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 ### Added
 
+* `Complexity::isFunction()` and `Complexity::isMethod()`
 * `ComplexityCollection::mergeWith()`
 
 ## [3.0.1] - 2023-08-31
