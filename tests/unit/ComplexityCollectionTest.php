@@ -73,4 +73,20 @@ final class ComplexityCollectionTest extends TestCase
 
         $this->assertSame(3, $collection->cyclomaticComplexity());
     }
+
+    public function testCanBeMerged(): void
+    {
+        $a = ComplexityCollection::fromList($this->array[0]);
+        $b = ComplexityCollection::fromList($this->array[1]);
+
+        $c = $a->mergeWith($b);
+
+        $this->assertSame(
+            [
+                $this->array[0],
+                $this->array[1],
+            ],
+            $c->asArray(),
+        );
+    }
 }

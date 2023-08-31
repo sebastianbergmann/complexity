@@ -9,6 +9,7 @@
  */
 namespace SebastianBergmann\Complexity;
 
+use function array_merge;
 use function count;
 use Countable;
 use IteratorAggregate;
@@ -74,5 +75,15 @@ final class ComplexityCollection implements Countable, IteratorAggregate
         }
 
         return $cyclomaticComplexity;
+    }
+
+    public function mergeWith(self $other): self
+    {
+        return new self(
+            array_merge(
+                $this->asArray(),
+                $other->asArray(),
+            ),
+        );
     }
 }
