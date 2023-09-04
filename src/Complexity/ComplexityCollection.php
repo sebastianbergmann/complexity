@@ -86,41 +86,23 @@ final class ComplexityCollection implements Countable, IteratorAggregate
 
     public function cyclomaticComplexityMinimum(): int
     {
-        $values = $this->cyclomaticComplexityValues();
-
-        if (empty($values)) {
-            return 0;
-        }
-
-        return min($values);
+        /** @psalm-suppress ArgumentTypeCoercion */
+        return min($this->cyclomaticComplexityValues());
     }
 
     public function cyclomaticComplexityMaximum(): int
     {
-        $values = $this->cyclomaticComplexityValues();
-
-        if (empty($values)) {
-            return 0;
-        }
-
-        return max($values);
+        /** @psalm-suppress ArgumentTypeCoercion */
+        return max($this->cyclomaticComplexityValues());
     }
 
     public function cyclomaticComplexityAverage(): float
     {
-        if (empty($this->items)) {
-            return 0;
-        }
-
         return array_sum($this->cyclomaticComplexityValues()) / count($this->items);
     }
 
     public function cyclomaticComplexityMedian(): float
     {
-        if (empty($this->items)) {
-            return 0;
-        }
-
         return $this->median($this->cyclomaticComplexityValues());
     }
 
