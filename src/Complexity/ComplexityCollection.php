@@ -11,13 +11,8 @@ namespace SebastianBergmann\Complexity;
 
 use function array_filter;
 use function array_merge;
-use function array_sum;
 use function array_values;
 use function count;
-use function floor;
-use function max;
-use function min;
-use function sort;
 use Countable;
 use IteratorAggregate;
 
@@ -84,28 +79,6 @@ final class ComplexityCollection implements Countable, IteratorAggregate
         return $cyclomaticComplexity;
     }
 
-    public function cyclomaticComplexityMinimum(): int
-    {
-        /** @psalm-suppress ArgumentTypeCoercion */
-        return min($this->cyclomaticComplexityValues());
-    }
-
-    public function cyclomaticComplexityMaximum(): int
-    {
-        /** @psalm-suppress ArgumentTypeCoercion */
-        return max($this->cyclomaticComplexityValues());
-    }
-
-    public function cyclomaticComplexityAverage(): float
-    {
-        return array_sum($this->cyclomaticComplexityValues()) / count($this->items);
-    }
-
-    public function cyclomaticComplexityMedian(): float
-    {
-        return $this->median($this->cyclomaticComplexityValues());
-    }
-
     public function isFunction(): self
     {
         return new self(
@@ -138,39 +111,5 @@ final class ComplexityCollection implements Countable, IteratorAggregate
                 $other->asArray(),
             ),
         );
-    }
-
-    /**
-     * @psalm-return list<non-negative-int>
-     */
-    private function cyclomaticComplexityValues(): array
-    {
-        $values = [];
-
-        foreach ($this as $item) {
-            $values[] = $item->cyclomaticComplexity();
-        }
-
-        return $values;
-    }
-
-    /**
-     * @psalm-param list<float|int> $values
-     */
-    private function median(array $values): float
-    {
-        sort($values);
-
-        $count  = count($values);
-        $middle = (int) floor(($count - 1) / 2);
-
-        if ($count % 2) {
-            return (float) $values[$middle];
-        }
-
-        $low  = $values[$middle];
-        $high = $values[$middle + 1];
-
-        return (float) ($low + $high) / 2;
     }
 }
