@@ -41,7 +41,7 @@ final class ComplexityCalculatingVisitorTest extends TestCase
     }
 
     #[DataProvider('shortCircuitTraversalProvider')]
-    public function testCalculatesComplexityForAbstractSyntaxTree(bool $shortCircuitTraversal): void
+    public function testCalculatesComplexityForAbstractSyntaxTreeOfClass(bool $shortCircuitTraversal): void
     {
         $nodes = $this->parser()->parse(
             file_get_contents(__DIR__ . '/../_fixture/ExampleClass.php'),
@@ -84,7 +84,50 @@ final class ComplexityCalculatingVisitorTest extends TestCase
     }
 
     #[DataProvider('shortCircuitTraversalProvider')]
-    public function testCalculatesComplexityForAbstractSyntaxTreeInterface(bool $shortCircuitTraversal): void
+    public function testCalculatesComplexityForAbstractSyntaxTreeOfAnonymousClass(bool $shortCircuitTraversal): void
+    {
+        $nodes = $this->parser()->parse(
+            file_get_contents(__DIR__ . '/../_fixture/anonymous_class.php'),
+        );
+
+        $traverser = new NodeTraverser;
+
+        $complexityCalculatingVisitor = new ComplexityCalculatingVisitor($shortCircuitTraversal);
+
+        $shortCircuitVisitor = new class extends NodeVisitorAbstract
+        {
+            private int $numberOfNodesVisited = 0;
+
+            public function enterNode(Node $node): void
+            {
+                $this->numberOfNodesVisited++;
+            }
+
+            public function numberOfNodesVisited(): int
+            {
+                return $this->numberOfNodesVisited;
+            }
+        };
+
+        $traverser->addVisitor(new NameResolver);
+        $traverser->addVisitor(new ParentConnectingVisitor);
+        $traverser->addVisitor($complexityCalculatingVisitor);
+        $traverser->addVisitor($shortCircuitVisitor);
+
+        /* @noinspection UnusedFunctionResultInspection */
+        $traverser->traverse($nodes);
+
+        $this->assertSame(14, $complexityCalculatingVisitor->result()->cyclomaticComplexity());
+
+        if ($shortCircuitTraversal) {
+            $this->assertSame(12, $shortCircuitVisitor->numberOfNodesVisited());
+        } else {
+            $this->assertSame(73, $shortCircuitVisitor->numberOfNodesVisited());
+        }
+    }
+
+    #[DataProvider('shortCircuitTraversalProvider')]
+    public function testCalculatesComplexityForAbstractSyntaxTreeOfInterface(bool $shortCircuitTraversal): void
     {
         $nodes = $this->parser()->parse(
             file_get_contents(__DIR__ . '/../_fixture/ExampleInterface.php'),

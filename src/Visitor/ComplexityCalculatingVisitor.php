@@ -103,6 +103,11 @@ final class ComplexityCalculatingVisitor extends NodeVisitorAbstract
         $parent = $node->getAttribute('parent');
 
         assert($parent instanceof Class_ || $parent instanceof Trait_);
+
+        if ($parent->getAttribute('parent') instanceof Node\Expr\New_) {
+            return 'anonymous class';
+        }
+
         assert(isset($parent->namespacedName));
         assert($parent->namespacedName instanceof Name);
 

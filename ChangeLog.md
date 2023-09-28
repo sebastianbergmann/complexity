@@ -10,6 +10,10 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 * `ComplexityCollection::isFunction()` and `ComplexityCollection::isMethod()`
 * `ComplexityCollection::mergeWith()`
 
+### Fixed
+
+* Anonymous classes are not processed correctly
+
 ## [3.0.1] - 2023-08-31
 
 ### Fixed
