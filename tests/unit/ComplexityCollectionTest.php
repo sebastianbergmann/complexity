@@ -97,4 +97,12 @@ final class ComplexityCollectionTest extends TestCase
         $this->assertTrue($collection->isFunction()->asArray()[0]->isFunction());
         $this->assertTrue($collection->isMethod()->asArray()[0]->isMethod());
     }
+
+    public function testCanBeSorted(): void
+    {
+        $collection = ComplexityCollection::fromList($this->array[0], $this->array[1])->sortByDescendingCyclomaticComplexity();
+
+        $this->assertSame('function', $collection->asArray()[0]->name());
+        $this->assertSame('Class::method', $collection->asArray()[1]->name());
+    }
 }
