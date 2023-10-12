@@ -44,6 +44,7 @@ final class CyclomaticComplexityCalculatingVisitor extends NodeVisitorAbstract
             case If_::class:
             case LogicalAnd::class:
             case LogicalOr::class:
+            case Node\MatchArm::class:
             case Ternary::class:
             case While_::class:
                 $this->cyclomaticComplexity++;

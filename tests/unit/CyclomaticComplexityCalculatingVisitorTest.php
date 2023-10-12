@@ -35,6 +35,6 @@ final class CyclomaticComplexityCalculatingVisitorTest extends TestCase
         /* @noinspection UnusedFunctionResultInspection */
         $traverser->traverse($nodes);
 
-        $this->assertSame(14, $visitor->cyclomaticComplexity());
+        $this->assertSame(16, $visitor->cyclomaticComplexity());
     }
 }

@@ -27,6 +27,11 @@ function example_function(): void
 
                     default:
                 }
+
+                $result = match ($i) {
+                    0 => 'foo',
+                    1 => 'bar'
+                };
             }
         }
     } elseif (null) {

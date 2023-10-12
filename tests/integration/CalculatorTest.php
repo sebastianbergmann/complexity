@@ -47,7 +47,7 @@ final class CalculatorTest extends TestCase
         $result = (new Calculator)->calculateForSourceFile(__DIR__ . '/../_fixture/example_function.php')->asArray();
 
         $this->assertSame('SebastianBergmann\Complexity\TestFixture\example_function', $result[0]->name());
-        $this->assertSame(14, $result[0]->cyclomaticComplexity());
+        $this->assertSame(16, $result[0]->cyclomaticComplexity());
     }
 
     public function testCalculatesCyclomaticComplexityInSourceString(): void
