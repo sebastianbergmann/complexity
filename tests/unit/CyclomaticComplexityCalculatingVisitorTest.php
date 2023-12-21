@@ -10,9 +10,7 @@
 namespace SebastianBergmann\Complexity;
 
 use function file_get_contents;
-use PhpParser\Lexer;
 use PhpParser\NodeTraverser;
-use PhpParser\Parser;
 use PhpParser\ParserFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
@@ -24,7 +22,7 @@ final class CyclomaticComplexityCalculatingVisitorTest extends TestCase
 {
     public function testCalculatesCyclomaticComplexityForAbstractSyntaxTree(): void
     {
-        $nodes = $this->parser()->parse(
+        $nodes = (new ParserFactory)->createForHostVersion()->parse(
             file_get_contents(__DIR__ . '/../_fixture/example_function.php'),
         );
 
@@ -38,10 +36,5 @@ final class CyclomaticComplexityCalculatingVisitorTest extends TestCase
         $traverser->traverse($nodes);
 
         $this->assertSame(14, $visitor->cyclomaticComplexity());
-    }
-
-    private function parser(): Parser
-    {
-        return (new ParserFactory)->create(ParserFactory::PREFER_PHP7, new Lexer);
     }
 }

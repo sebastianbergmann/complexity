@@ -2,11 +2,15 @@
 
 All notable changes are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-## [3.2.0] - 2023-MM-DD
+## [3.2.0] - 2023-12-DD
 
 ### Added
 
 * `ComplexityCollection::sortByDescendingCyclomaticComplexity()`
+
+### Changed
+
+* This component is now compatible with `nikic/php-parser` 5.0
 
 ## [3.1.0] - 2023-09-28
 

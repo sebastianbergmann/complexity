@@ -11,8 +11,6 @@ namespace SebastianBergmann\Complexity;
 
 use function assert;
 use function file_get_contents;
-use PhpParser\Lexer;
-use PhpParser\Parser;
 use PhpParser\ParserFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
@@ -62,7 +60,7 @@ final class CalculatorTest extends TestCase
 
     public function testCalculatesCyclomaticComplexityInAbstractSyntaxTree(): void
     {
-        $nodes = $this->parser()->parse(file_get_contents(__DIR__ . '/../_fixture/ExampleClass.php'));
+        $nodes = (new ParserFactory)->createForHostVersion()->parse(file_get_contents(__DIR__ . '/../_fixture/ExampleClass.php'));
 
         assert($nodes !== null);
 
@@ -70,10 +68,5 @@ final class CalculatorTest extends TestCase
 
         $this->assertSame('SebastianBergmann\Complexity\TestFixture\ExampleClass::method', $result[0]->name());
         $this->assertSame(14, $result[0]->cyclomaticComplexity());
-    }
-
-    private function parser(): Parser
-    {
-        return (new ParserFactory)->create(ParserFactory::PREFER_PHP7, new Lexer);
     }
 }
