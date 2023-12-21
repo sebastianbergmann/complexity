@@ -2,7 +2,7 @@
 
 All notable changes are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-## [3.2.0] - 2023-12-DD
+## [3.2.0] - 2023-12-21
 
 ### Added
 
@@ -58,7 +58,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * Initial release
 
-[3.2.0]: https://github.com/sebastianbergmann/complexity/compare/3.1.0...main
+[3.2.0]: https://github.com/sebastianbergmann/complexity/compare/3.1.0...3.2.0
 [3.1.0]: https://github.com/sebastianbergmann/complexity/compare/3.0.1...3.1.0
 [3.0.1]: https://github.com/sebastianbergmann/complexity/compare/3.0.0...3.0.1
 [3.0.0]: https://github.com/sebastianbergmann/complexity/compare/2.0.2...3.0.0
