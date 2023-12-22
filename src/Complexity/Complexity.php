@@ -14,12 +14,12 @@ use function str_contains;
 /**
  * @psalm-immutable
  */
-final class Complexity
+final readonly class Complexity
 {
     /**
      * @psalm-var non-empty-string
      */
-    private readonly string $name;
+    private string $name;
 
     /**
      * @psalm-var positive-int
