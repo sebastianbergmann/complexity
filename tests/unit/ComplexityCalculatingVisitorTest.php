@@ -10,13 +10,11 @@
 namespace SebastianBergmann\Complexity;
 
 use function file_get_contents;
-use PhpParser\Lexer;
 use PhpParser\Node;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\NodeVisitor\ParentConnectingVisitor;
 use PhpParser\NodeVisitorAbstract;
-use PhpParser\Parser;
 use PhpParser\ParserFactory;
 use PHPUnit\Framework\TestCase;
 
@@ -37,7 +35,7 @@ final class ComplexityCalculatingVisitorTest extends TestCase
      */
     public function testCalculatesComplexityForAbstractSyntaxTree(bool $shortCircuitTraversal): void
     {
-        $nodes = $this->parser()->parse(
+        $nodes = (new ParserFactory)->createForHostVersion()->parse(
             file_get_contents(__DIR__ . '/../_fixture/ExampleClass.php')
         );
 
@@ -82,10 +80,5 @@ final class ComplexityCalculatingVisitorTest extends TestCase
             'short-circuit traversal'    => [true],
             'no short-circuit traversal' => [false],
         ];
-    }
-
-    private function parser(): Parser
-    {
-        return (new ParserFactory)->create(ParserFactory::PREFER_PHP7, new Lexer);
     }
 }
