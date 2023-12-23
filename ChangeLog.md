@@ -6,6 +6,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 ### Removed
 
+* This component now requires PHP-Parser 5
 * This component is no longer supported on PHP 8.1
 
 ## [3.2.0] - 2023-12-21
