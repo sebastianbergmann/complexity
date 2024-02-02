@@ -16,7 +16,6 @@
         "security": "https://github.com/sebastianbergmann/complexity/security/policy"
     },
     "prefer-stable": true,
-    "minimum-stability": "dev",
     "require": {
         "php": ">=8.2",
         "nikic/php-parser": "^5.0"
