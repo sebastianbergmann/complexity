@@ -9,7 +9,6 @@
  */
 namespace SebastianBergmann\Complexity;
 
-use function assert;
 use function file_get_contents;
 use PhpParser\ParserFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -52,7 +51,11 @@ final class CalculatorTest extends TestCase
 
     public function testCalculatesCyclomaticComplexityInSourceString(): void
     {
-        $result = (new Calculator)->calculateForSourceString(file_get_contents(__DIR__ . '/../_fixture/ExampleClass.php'))->asArray();
+        $source = file_get_contents(__DIR__ . '/../_fixture/ExampleClass.php');
+
+        $this->assertIsString($source);
+
+        $result = (new Calculator)->calculateForSourceString($source)->asArray();
 
         $this->assertSame('SebastianBergmann\Complexity\TestFixture\ExampleClass::method', $result[0]->name());
         $this->assertSame(14, $result[0]->cyclomaticComplexity());
@@ -60,9 +63,13 @@ final class CalculatorTest extends TestCase
 
     public function testCalculatesCyclomaticComplexityInAbstractSyntaxTree(): void
     {
-        $nodes = (new ParserFactory)->createForHostVersion()->parse(file_get_contents(__DIR__ . '/../_fixture/ExampleClass.php'));
+        $source = file_get_contents(__DIR__ . '/../_fixture/ExampleClass.php');
 
-        assert($nodes !== null);
+        $this->assertIsString($source);
+
+        $nodes = (new ParserFactory)->createForHostVersion()->parse($source);
+
+        $this->assertNotNull($nodes);
 
         $result = (new Calculator)->calculateForAbstractSyntaxTree($nodes)->asArray();
 

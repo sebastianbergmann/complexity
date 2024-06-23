@@ -11,6 +11,9 @@ namespace SebastianBergmann\Complexity;
 
 use Iterator;
 
+/**
+ * @template-implements Iterator<int, Complexity>
+ */
 final class ComplexityCollectionIterator implements Iterator
 {
     /**

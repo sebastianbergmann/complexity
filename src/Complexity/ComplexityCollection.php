@@ -19,7 +19,9 @@ use Countable;
 use IteratorAggregate;
 
 /**
- * @immutable
+ * @template-implements IteratorAggregate<int, Complexity>
+ *
+ * @psalm-immutable
  */
 final readonly class ComplexityCollection implements Countable, IteratorAggregate
 {

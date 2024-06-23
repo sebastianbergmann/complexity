@@ -22,9 +22,13 @@ final class CyclomaticComplexityCalculatingVisitorTest extends TestCase
 {
     public function testCalculatesCyclomaticComplexityForAbstractSyntaxTree(): void
     {
-        $nodes = (new ParserFactory)->createForHostVersion()->parse(
-            file_get_contents(__DIR__ . '/../_fixture/example_function.php'),
-        );
+        $source = file_get_contents(__DIR__ . '/../_fixture/example_function.php');
+
+        $this->assertIsString($source);
+
+        $nodes = (new ParserFactory)->createForHostVersion()->parse($source);
+
+        $this->assertNotNull($nodes);
 
         $traverser = new NodeTraverser;
 

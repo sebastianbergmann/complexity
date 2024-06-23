@@ -28,7 +28,7 @@ final readonly class Complexity
 
     /**
      * @param non-empty-string $name
-     * @param positive-int $cyclomaticComplexity
+     * @param positive-int     $cyclomaticComplexity
      */
     public function __construct(string $name, int $cyclomaticComplexity)
     {

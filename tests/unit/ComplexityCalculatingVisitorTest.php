@@ -30,6 +30,9 @@ use PHPUnit\Framework\TestCase;
 #[Small]
 final class ComplexityCalculatingVisitorTest extends TestCase
 {
+    /**
+     * @return array<string, array{0: bool}>
+     */
     public static function shortCircuitTraversalProvider(): array
     {
         return [
@@ -41,9 +44,13 @@ final class ComplexityCalculatingVisitorTest extends TestCase
     #[DataProvider('shortCircuitTraversalProvider')]
     public function testCalculatesComplexityForAbstractSyntaxTreeOfClass(bool $shortCircuitTraversal): void
     {
-        $nodes = (new ParserFactory)->createForHostVersion()->parse(
-            file_get_contents(__DIR__ . '/../_fixture/ExampleClass.php'),
-        );
+        $source = file_get_contents(__DIR__ . '/../_fixture/ExampleClass.php');
+
+        $this->assertIsString($source);
+
+        $nodes = (new ParserFactory)->createForHostVersion()->parse($source);
+
+        $this->assertNotNull($nodes);
 
         $traverser = new NodeTraverser;
 
@@ -84,9 +91,13 @@ final class ComplexityCalculatingVisitorTest extends TestCase
     #[DataProvider('shortCircuitTraversalProvider')]
     public function testCalculatesComplexityForAbstractSyntaxTreeOfAnonymousClass(bool $shortCircuitTraversal): void
     {
-        $nodes = (new ParserFactory)->createForHostVersion()->parse(
-            file_get_contents(__DIR__ . '/../_fixture/anonymous_class.php'),
-        );
+        $source = file_get_contents(__DIR__ . '/../_fixture/anonymous_class.php');
+
+        $this->assertIsString($source);
+
+        $nodes = (new ParserFactory)->createForHostVersion()->parse($source);
+
+        $this->assertNotNull($nodes);
 
         $traverser = new NodeTraverser;
 
@@ -127,9 +138,13 @@ final class ComplexityCalculatingVisitorTest extends TestCase
     #[DataProvider('shortCircuitTraversalProvider')]
     public function testCalculatesComplexityForAbstractSyntaxTreeOfInterface(bool $shortCircuitTraversal): void
     {
-        $nodes = (new ParserFactory)->createForHostVersion()->parse(
-            file_get_contents(__DIR__ . '/../_fixture/ExampleInterface.php'),
-        );
+        $source = file_get_contents(__DIR__ . '/../_fixture/ExampleInterface.php');
+
+        $this->assertIsString($source);
+
+        $nodes = (new ParserFactory)->createForHostVersion()->parse($source);
+
+        $this->assertNotNull($nodes);
 
         $traverser = new NodeTraverser;
 
