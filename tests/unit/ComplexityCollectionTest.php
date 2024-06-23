@@ -22,7 +22,7 @@ use PHPUnit\Framework\TestCase;
 final class ComplexityCollectionTest extends TestCase
 {
     /**
-     * @psalm-var list<Complexity>
+     * @var list<Complexity>
      */
     private array $array;
 

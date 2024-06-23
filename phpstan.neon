@@ -1,0 +1,52 @@
+parameters:
+    level: 9
+    paths:
+        - src
+        - tests/unit
+        - tests/integration
+
+    ignoreErrors:
+        -
+            message: "#^Parameter \\#1 \\$items of class SebastianBergmann\\\\Complexity\\\\ComplexityCollection constructor expects array\\<int, SebastianBergmann\\\\Complexity\\\\Complexity\\>, array\\<int\\|string, SebastianBergmann\\\\Complexity\\\\Complexity\\> given\\.$#"
+            count: 1
+            path: src/Complexity/ComplexityCollection.php
+
+        -
+            message: "#^Return type \\(void\\) of method SebastianBergmann\\\\Complexity\\\\CyclomaticComplexityCalculatingVisitor\\:\\:enterNode\\(\\) should be compatible with return type \\(array\\<PhpParser\\\\Node\\>\\|int\\|PhpParser\\\\Node\\|null\\) of method PhpParser\\\\NodeVisitor\\:\\:enterNode\\(\\)$#"
+            count: 1
+            path: src/Visitor/CyclomaticComplexityCalculatingVisitor.php
+
+        -
+            message: "#^Return type \\(void\\) of method SebastianBergmann\\\\Complexity\\\\CyclomaticComplexityCalculatingVisitor\\:\\:enterNode\\(\\) should be compatible with return type \\(array\\<PhpParser\\\\Node\\>\\|int\\|PhpParser\\\\Node\\|null\\) of method PhpParser\\\\NodeVisitorAbstract\\:\\:enterNode\\(\\)$#"
+            count: 1
+            path: src/Visitor/CyclomaticComplexityCalculatingVisitor.php
+
+        -
+            message: "#^Return type \\(void\\) of method class@anonymous/tests/unit/ComplexityCalculatingVisitorTest\\.php\\:106\\:\\:enterNode\\(\\) should be compatible with return type \\(array\\<PhpParser\\\\Node\\>\\|int\\|PhpParser\\\\Node\\|null\\) of method PhpParser\\\\NodeVisitor\\:\\:enterNode\\(\\)$#"
+            count: 1
+            path: tests/unit/ComplexityCalculatingVisitorTest.php
+
+        -
+            message: "#^Return type \\(void\\) of method class@anonymous/tests/unit/ComplexityCalculatingVisitorTest\\.php\\:106\\:\\:enterNode\\(\\) should be compatible with return type \\(array\\<PhpParser\\\\Node\\>\\|int\\|PhpParser\\\\Node\\|null\\) of method PhpParser\\\\NodeVisitorAbstract\\:\\:enterNode\\(\\)$#"
+            count: 1
+            path: tests/unit/ComplexityCalculatingVisitorTest.php
+
+        -
+            message: "#^Return type \\(void\\) of method class@anonymous/tests/unit/ComplexityCalculatingVisitorTest\\.php\\:153\\:\\:enterNode\\(\\) should be compatible with return type \\(array\\<PhpParser\\\\Node\\>\\|int\\|PhpParser\\\\Node\\|null\\) of method PhpParser\\\\NodeVisitor\\:\\:enterNode\\(\\)$#"
+            count: 1
+            path: tests/unit/ComplexityCalculatingVisitorTest.php
+
+        -
+            message: "#^Return type \\(void\\) of method class@anonymous/tests/unit/ComplexityCalculatingVisitorTest\\.php\\:153\\:\\:enterNode\\(\\) should be compatible with return type \\(array\\<PhpParser\\\\Node\\>\\|int\\|PhpParser\\\\Node\\|null\\) of method PhpParser\\\\NodeVisitorAbstract\\:\\:enterNode\\(\\)$#"
+            count: 1
+            path: tests/unit/ComplexityCalculatingVisitorTest.php
+
+        -
+            message: "#^Return type \\(void\\) of method class@anonymous/tests/unit/ComplexityCalculatingVisitorTest\\.php\\:59\\:\\:enterNode\\(\\) should be compatible with return type \\(array\\<PhpParser\\\\Node\\>\\|int\\|PhpParser\\\\Node\\|null\\) of method PhpParser\\\\NodeVisitor\\:\\:enterNode\\(\\)$#"
+            count: 1
+            path: tests/unit/ComplexityCalculatingVisitorTest.php
+
+        -
+            message: "#^Return type \\(void\\) of method class@anonymous/tests/unit/ComplexityCalculatingVisitorTest\\.php\\:59\\:\\:enterNode\\(\\) should be compatible with return type \\(array\\<PhpParser\\\\Node\\>\\|int\\|PhpParser\\\\Node\\|null\\) of method PhpParser\\\\NodeVisitorAbstract\\:\\:enterNode\\(\\)$#"
+            count: 1
+            path: tests/unit/ComplexityCalculatingVisitorTest.php
