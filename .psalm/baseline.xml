@@ -17,6 +17,9 @@
     <DeprecatedConstant>
       <code>NodeTraverser::DONT_TRAVERSE_CHILDREN</code>
     </DeprecatedConstant>
+    <RedundantCondition>
+      <code><![CDATA[$functionName !== '']]></code>
+    </RedundantCondition>
     <RedundantConditionGivenDocblockType>
       <code><![CDATA[assert($node->namespacedName instanceof Name)]]></code>
       <code><![CDATA[assert($parent->namespacedName instanceof Name)]]></code>
