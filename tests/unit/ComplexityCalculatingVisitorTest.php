@@ -60,9 +60,11 @@ final class ComplexityCalculatingVisitorTest extends TestCase
         {
             private int $numberOfNodesVisited = 0;
 
-            public function enterNode(Node $node): void
+            public function enterNode(Node $node): null
             {
                 $this->numberOfNodesVisited++;
+
+                return null;
             }
 
             public function numberOfNodesVisited(): int
@@ -107,9 +109,11 @@ final class ComplexityCalculatingVisitorTest extends TestCase
         {
             private int $numberOfNodesVisited = 0;
 
-            public function enterNode(Node $node): void
+            public function enterNode(Node $node): null
             {
                 $this->numberOfNodesVisited++;
+
+                return null;
             }
 
             public function numberOfNodesVisited(): int
@@ -154,9 +158,11 @@ final class ComplexityCalculatingVisitorTest extends TestCase
         {
             private int $numberOfNodesVisited = 0;
 
-            public function enterNode(Node $node): void
+            public function enterNode(Node $node): null
             {
                 $this->numberOfNodesVisited++;
+
+                return null;
             }
 
             public function numberOfNodesVisited(): int
