@@ -1,9 +1,13 @@
 parameters:
     level: 10
+
     paths:
         - src
         - tests/unit
         - tests/integration
+
+    bootstrapFiles:
+        - tools/phpunit.phar
 
     checkTooWideReturnTypesInProtectedAndPublicMethods: true
     reportAlwaysTrueInLastCondition: true
