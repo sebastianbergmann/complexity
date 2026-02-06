@@ -84,7 +84,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * Initial release
 
-[6.0.0]: https://github.com/sebastianbergmann/complexity/compare/5.0...main
+[6.0.0]: https://github.com/sebastianbergmann/complexity/compare/5.0...6.0.0
 [5.0.0]: https://github.com/sebastianbergmann/complexity/compare/4.0...5.0.0
 [4.0.1]: https://github.com/sebastianbergmann/complexity/compare/4.0.0...4.0.1
 [4.0.0]: https://github.com/sebastianbergmann/complexity/compare/3.2...4.0.0

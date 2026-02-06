@@ -15,7 +15,6 @@
         "issues": "https://github.com/sebastianbergmann/complexity/issues",
         "security": "https://github.com/sebastianbergmann/complexity/security/policy"
     },
-    "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
         "php": ">=8.4",
