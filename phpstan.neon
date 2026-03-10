@@ -1,6 +1,7 @@
 parameters:
     level: 10
     paths:
+        - bin
         - src
         - tests/unit
         - tests/integration
