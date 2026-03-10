@@ -18,6 +18,7 @@
     "prefer-stable": true,
     "require": {
         "php": ">=8.4",
+        "ext-mbstring": "*",
         "nikic/php-parser": "^5.7.0"
     },
     "require-dev": {

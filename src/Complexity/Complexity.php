@@ -27,13 +27,20 @@ final readonly class Complexity
     private int $cyclomaticComplexity;
 
     /**
+     * @var positive-int
+     */
+    private int $acpath;
+
+    /**
      * @param non-empty-string $name
      * @param positive-int     $cyclomaticComplexity
+     * @param positive-int     $acpath
      */
-    public function __construct(string $name, int $cyclomaticComplexity)
+    public function __construct(string $name, int $cyclomaticComplexity, int $acpath)
     {
         $this->name                 = $name;
         $this->cyclomaticComplexity = $cyclomaticComplexity;
+        $this->acpath               = $acpath;
     }
 
     /**
@@ -50,6 +57,14 @@ final readonly class Complexity
     public function cyclomaticComplexity(): int
     {
         return $this->cyclomaticComplexity;
+    }
+
+    /**
+     * @return positive-int
+     */
+    public function acpath(): int
+    {
+        return $this->acpath;
     }
 
     public function isFunction(): bool
