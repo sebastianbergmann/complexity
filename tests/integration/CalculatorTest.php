@@ -21,6 +21,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(CyclomaticComplexityCalculatingVisitor::class)]
 #[UsesClass(Complexity::class)]
 #[UsesClass(ComplexityCollection::class)]
+#[UsesClass(AcpathCalculator::class)]
 #[UsesClass(ComplexityCollectionIterator::class)]
 #[Medium]
 final class CalculatorTest extends TestCase
