@@ -435,8 +435,8 @@ final class AcpathDecompositionDotVisitor
         ));
 
         // Use the simple formula from AcpathCalculator
-        ['t'  => $t2, 'f' => $f2, 'p' => $p2] = $this->expressionPaths($stmt->cond);
-        ['tf' => $tf]                         = $this->expressionPathsDouble($stmt->cond);
+        ['t'  => $t2, 'f' => $f2, 'p' => $p2] = ExpressionPathAnalyzer::expressionPaths($stmt->cond);
+        ['tf' => $tf]                         = ExpressionPathAnalyzer::expressionPathsDouble($stmt->cond);
 
         $ftOut = $f2 * $ft + $bpS * $t2 + ($ftS + $cpS) * $tf;
 
@@ -467,7 +467,7 @@ final class AcpathDecompositionDotVisitor
             $rpS,
         ));
 
-        ['f' => $f] = $this->expressionPaths($stmt->cond);
+        ['f' => $f] = ExpressionPathAnalyzer::expressionPaths($stmt->cond);
         $ftOut      = $f * $ftS + $bpS;
 
         $result = ['ft' => $ftOut, 'bp' => 0, 'cp' => 0, 'rp' => $rpS];
@@ -487,7 +487,7 @@ final class AcpathDecompositionDotVisitor
     private function processFor(For_ $stmt, int $ft, int $st, int $nodeId): array
     {
         foreach ($stmt->init as $initExpr) {
-            $ft = $this->expressionPaths($initExpr)['p'] * $ft;
+            $ft = ExpressionPathAnalyzer::expressionPaths($initExpr)['p'] * $ft;
         }
 
         if ($stmt->cond !== []) {
@@ -506,8 +506,8 @@ final class AcpathDecompositionDotVisitor
             $bodyStmts[] = new Expression($loopExpr);
         }
 
-        ['t'  => $t, 'f' => $f, 'p' => $p] = $this->expressionPaths($condExpr);
-        ['tf' => $tf]                      = $this->expressionPathsDouble($condExpr);
+        ['t'  => $t, 'f' => $f, 'p' => $p] = ExpressionPathAnalyzer::expressionPaths($condExpr);
+        ['tf' => $tf]                      = ExpressionPathAnalyzer::expressionPathsDouble($condExpr);
 
         $bodyId = $this->addNode('');
         $this->addEdge($nodeId, $bodyId, 'body');
@@ -922,176 +922,6 @@ final class AcpathDecompositionDotVisitor
 
         // Leaf expression
         return ['t' => 1, 'f' => 1, 'p' => 1];
-    }
-
-    /**
-     * Mirrors AcpathCalculator::expressionPaths (no tree building).
-     *
-     * @return array{t: int, f: int, p: int}
-     */
-    private function expressionPaths(Expr $expr): array
-    {
-        if ($expr instanceof BooleanNot) {
-            ['t' => $t, 'f' => $f, 'p' => $p] = $this->expressionPaths($expr->expr);
-
-            return ['t' => $f, 'f' => $t, 'p' => $p];
-        }
-
-        if ($expr instanceof BooleanAnd || $expr instanceof LogicalAnd) {
-            ['t' => $t1, 'f' => $f1, 'p' => $p1] = $this->expressionPaths($expr->left);
-            ['t' => $t2, 'f' => $f2, 'p' => $p2] = $this->expressionPaths($expr->right);
-
-            return ['t' => $t1 * $t2, 'f' => $f1 + $t1 * $f2, 'p' => $f1 + $t1 * $p2];
-        }
-
-        if ($expr instanceof BooleanOr || $expr instanceof LogicalOr) {
-            ['t' => $t1, 'f' => $f1, 'p' => $p1] = $this->expressionPaths($expr->left);
-            ['t' => $t2, 'f' => $f2, 'p' => $p2] = $this->expressionPaths($expr->right);
-
-            return ['t' => $t1 + $f1 * $t2, 'f' => $f1 * $f2, 'p' => $t1 + $f1 * $p2];
-        }
-
-        if ($expr instanceof Ternary) {
-            if ($expr->if === null) {
-                ['t' => $t1, 'f' => $f1, 'p' => $p1] = $this->expressionPaths($expr->cond);
-                ['t' => $t2, 'f' => $f2, 'p' => $p2] = $this->expressionPaths($expr->else);
-
-                return ['t' => $t1 + $f1 * $t2, 'f' => $f1 * $f2, 'p' => $t1 + $f1 * $p2];
-            }
-
-            ['t' => $t1, 'f' => $f1, 'p' => $p1] = $this->expressionPaths($expr->cond);
-            ['t' => $t2, 'f' => $f2, 'p' => $p2] = $this->expressionPaths($expr->if);
-            ['t' => $t3, 'f' => $f3, 'p' => $p3] = $this->expressionPaths($expr->else);
-
-            return [
-                't' => $t1 * $t2 + $f1 * $t3,
-                'f' => $t1 * $f2 + $f1 * $f3,
-                'p' => $t1 * $p2 + $f1 * $p3,
-            ];
-        }
-
-        if ($expr instanceof Coalesce) {
-            ['t' => $t1, 'f' => $f1, 'p' => $p1] = $this->expressionPaths($expr->left);
-            ['t' => $t2, 'f' => $f2, 'p' => $p2] = $this->expressionPaths($expr->right);
-
-            return ['t' => $t1 + $f1 * $t2, 'f' => $f1 * $f2, 'p' => $t1 + $f1 * $p2];
-        }
-
-        if ($expr instanceof Match_) {
-            $totalP = 0;
-
-            foreach ($expr->arms as $arm) {
-                if ($arm->conds !== null) {
-                    foreach ($arm->conds as $cond) {
-                        $totalP += $this->expressionPaths($cond)['p'];
-                    }
-                }
-
-                $totalP += $this->expressionPaths($arm->body)['p'];
-            }
-
-            return ['t' => $totalP, 'f' => $totalP, 'p' => $totalP];
-        }
-
-        if ($expr instanceof Assign || $expr instanceof AssignOp) {
-            $pVar  = $this->expressionPaths($expr->var)['p'];
-            $pExpr = $this->expressionPaths($expr->expr)['p'];
-            $p     = $pVar * $pExpr;
-
-            return ['t' => $p, 'f' => $p, 'p' => $p];
-        }
-
-        if ($expr instanceof BinaryOp) {
-            $p1 = $this->expressionPaths($expr->left)['p'];
-            $p2 = $this->expressionPaths($expr->right)['p'];
-            $p  = $p1 * $p2;
-
-            return ['t' => $p, 'f' => $p, 'p' => $p];
-        }
-
-        if ($expr instanceof Cast || $expr instanceof UnaryMinus || $expr instanceof UnaryPlus) {
-            $p = $this->expressionPaths($expr->expr)['p'];
-
-            return ['t' => $p, 'f' => $p, 'p' => $p];
-        }
-
-        return ['t' => 1, 'f' => 1, 'p' => 1];
-    }
-
-    /**
-     * Mirrors AcpathCalculator::expressionPathsDouble (no tree building).
-     *
-     * @return array{tt: int, tf: int, ff: int, pp: int}
-     */
-    private function expressionPathsDouble(Expr $expr): array
-    {
-        if ($expr instanceof BooleanNot) {
-            ['tt' => $tt, 'tf' => $tf, 'ff' => $ff, 'pp' => $pp] = $this->expressionPathsDouble($expr->expr);
-
-            return ['tt' => $ff, 'tf' => $tf, 'ff' => $tt, 'pp' => $pp];
-        }
-
-        if ($expr instanceof BooleanAnd || $expr instanceof LogicalAnd) {
-            ['t'  => $t1, 'f' => $f1, 'p' => $p1]                    = $this->expressionPaths($expr->left);
-            ['t'  => $t2, 'f' => $f2, 'p' => $p2]                    = $this->expressionPaths($expr->right);
-            ['tt' => $tt1, 'tf' => $tf1, 'ff' => $ff1, 'pp' => $pp1] = $this->expressionPathsDouble($expr->left);
-            ['tt' => $tt2, 'tf' => $tf2, 'ff' => $ff2, 'pp' => $pp2] = $this->expressionPathsDouble($expr->right);
-
-            return [
-                'tt' => $tt1 * $tt2,
-                'tf' => $tf1 * $t2 + $tt1 * $tf2,
-                'ff' => $ff1 + 2 * $tf1 * $f2 + $tt1 * $ff2,
-                'pp' => $ff1 + 2 * $tf1 * $p2 + $tt1 * $pp2,
-            ];
-        }
-
-        if ($expr instanceof BooleanOr || $expr instanceof LogicalOr) {
-            ['t'  => $t1, 'f' => $f1, 'p' => $p1]                    = $this->expressionPaths($expr->left);
-            ['t'  => $t2, 'f' => $f2, 'p' => $p2]                    = $this->expressionPaths($expr->right);
-            ['tt' => $tt1, 'tf' => $tf1, 'ff' => $ff1, 'pp' => $pp1] = $this->expressionPathsDouble($expr->left);
-            ['tt' => $tt2, 'tf' => $tf2, 'ff' => $ff2, 'pp' => $pp2] = $this->expressionPathsDouble($expr->right);
-
-            return [
-                'tt' => $tt1 + 2 * $tf1 * $t2 + $ff1 * $tt2,
-                'tf' => $tf1 * $f2 + $ff1 * $tf2,
-                'ff' => $ff1 * $ff2,
-                'pp' => $tt1 + 2 * $tf1 * $p2 + $ff1 * $pp2,
-            ];
-        }
-
-        if ($expr instanceof Ternary) {
-            if ($expr->if === null) {
-                ['t'  => $t1, 'f' => $f1, 'p' => $p1]                    = $this->expressionPaths($expr->cond);
-                ['t'  => $t2, 'f' => $f2, 'p' => $p2]                    = $this->expressionPaths($expr->else);
-                ['tt' => $tt1, 'tf' => $tf1, 'ff' => $ff1, 'pp' => $pp1] = $this->expressionPathsDouble($expr->cond);
-                ['tt' => $tt2, 'tf' => $tf2, 'ff' => $ff2, 'pp' => $pp2] = $this->expressionPathsDouble($expr->else);
-
-                return [
-                    'tt' => $tt1 + 2 * $tf1 * $t2 + $ff1 * $tt2,
-                    'tf' => $tf1 * $f2 + $ff1 * $tf2,
-                    'ff' => $ff1 * $ff2,
-                    'pp' => $tt1 + 2 * $tf1 * $p2 + $ff1 * $pp2,
-                ];
-            }
-
-            ['t'  => $t1, 'f' => $f1, 'p' => $p1]                    = $this->expressionPaths($expr->cond);
-            ['t'  => $t2, 'f' => $f2, 'p' => $p2]                    = $this->expressionPaths($expr->if);
-            ['t'  => $t3, 'f' => $f3, 'p' => $p3]                    = $this->expressionPaths($expr->else);
-            ['tt' => $tt1, 'tf' => $tf1, 'ff' => $ff1, 'pp' => $pp1] = $this->expressionPathsDouble($expr->cond);
-            ['tt' => $tt2, 'tf' => $tf2, 'ff' => $ff2, 'pp' => $pp2] = $this->expressionPathsDouble($expr->if);
-            ['tt' => $tt3, 'tf' => $tf3, 'ff' => $ff3, 'pp' => $pp3] = $this->expressionPathsDouble($expr->else);
-
-            return [
-                'tt' => $tt1 * $tt2 + 2 * $tf1 * $t2 * $t3 + $ff1 * $tt3,
-                'tf' => $tt1 * $tf2 + $ff1 * $tf3 + $tf1 * ($t2 * $f3 + $f2 * $t3),
-                'ff' => $tt1 * $ff2 + 2 * $tf1 * $f2 * $f3 + $ff1 * $ff3,
-                'pp' => $tt1 * $pp2 + 2 * $tf1 * $p2 * $p3 + $ff1 * $pp3,
-            ];
-        }
-
-        $p = $this->expressionPaths($expr)['p'];
-
-        return ['tt' => 0, 'tf' => $p, 'ff' => 0, 'pp' => 0];
     }
 
     private function addNode(string $label): int
