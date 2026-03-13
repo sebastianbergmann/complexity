@@ -23,6 +23,7 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(ComplexityCalculatingVisitor::class)]
+#[UsesClass(ExpressionPathAnalyzer::class)]
 #[UsesClass(Complexity::class)]
 #[UsesClass(ComplexityCollection::class)]
 #[UsesClass(ComplexityCollectionIterator::class)]
