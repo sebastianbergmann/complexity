@@ -18,10 +18,12 @@ use PhpParser\ParserFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(AcpathDecompositionDotVisitor::class)]
 #[CoversClass(AcpathCalculator::class)]
+#[UsesClass(ExpressionPathAnalyzer::class)]
 #[Small]
 final class AcpathDecompositionDotVisitorTest extends TestCase
 {
