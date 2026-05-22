@@ -243,7 +243,7 @@ final class AcpathCalculator
      */
     private function processWhile(While_ $stmt, int $ft, int $st): array
     {
-        ['t'  => $t, 'f' => $f, 'p' => $p]                       = ExpressionPathAnalyzer::expressionPaths($stmt->cond);
+        ['t' => $t, 'f' => $f, 'p' => $p]                        = ExpressionPathAnalyzer::expressionPaths($stmt->cond);
         ['tf' => $tf]                                            = ExpressionPathAnalyzer::expressionPathsDouble($stmt->cond);
         ['ft' => $ftS, 'bp' => $bpS, 'cp' => $cpS, 'rp' => $rpS] = $this->statements($stmt->stmts, $ft, $st);
 
@@ -295,7 +295,7 @@ final class AcpathCalculator
             $bodyStmts[] = new Expression($loopExpr);
         }
 
-        ['t'  => $t, 'f' => $f, 'p' => $p]                       = ExpressionPathAnalyzer::expressionPaths($condExpr);
+        ['t' => $t, 'f' => $f, 'p' => $p]                        = ExpressionPathAnalyzer::expressionPaths($condExpr);
         ['tf' => $tf]                                            = ExpressionPathAnalyzer::expressionPathsDouble($condExpr);
         ['ft' => $ftS, 'bp' => $bpS, 'cp' => $cpS, 'rp' => $rpS] = $this->statements($bodyStmts, $ft, $st);
 

@@ -435,8 +435,8 @@ final class AcpathDecompositionDotVisitor
         ));
 
         // Use the simple formula from AcpathCalculator
-        ['t'  => $t2, 'f' => $f2, 'p' => $p2] = ExpressionPathAnalyzer::expressionPaths($stmt->cond);
-        ['tf' => $tf]                         = ExpressionPathAnalyzer::expressionPathsDouble($stmt->cond);
+        ['t' => $t2, 'f' => $f2, 'p' => $p2] = ExpressionPathAnalyzer::expressionPaths($stmt->cond);
+        ['tf' => $tf]                        = ExpressionPathAnalyzer::expressionPathsDouble($stmt->cond);
 
         $ftOut = $f2 * $ft + $bpS * $t2 + ($ftS + $cpS) * $tf;
 
@@ -506,8 +506,8 @@ final class AcpathDecompositionDotVisitor
             $bodyStmts[] = new Expression($loopExpr);
         }
 
-        ['t'  => $t, 'f' => $f, 'p' => $p] = ExpressionPathAnalyzer::expressionPaths($condExpr);
-        ['tf' => $tf]                      = ExpressionPathAnalyzer::expressionPathsDouble($condExpr);
+        ['t' => $t, 'f' => $f, 'p' => $p] = ExpressionPathAnalyzer::expressionPaths($condExpr);
+        ['tf' => $tf]                     = ExpressionPathAnalyzer::expressionPathsDouble($condExpr);
 
         $bodyId = $this->addNode('');
         $this->addEdge($nodeId, $bodyId, 'body');
