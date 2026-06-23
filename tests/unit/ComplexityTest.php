@@ -27,6 +27,11 @@ final class ComplexityTest extends TestCase
         $this->assertSame(1, $this->complexityForMethod()->cyclomaticComplexity());
     }
 
+    public function testHasAcpath(): void
+    {
+        $this->assertSame(5, (new Complexity('Foo::bar', 1, 5))->acpath());
+    }
+
     public function testCanBeFunction(): void
     {
         $this->assertTrue($this->complexityForFunction()->isFunction());
@@ -41,11 +46,11 @@ final class ComplexityTest extends TestCase
 
     private function complexityForFunction(): Complexity
     {
-        return new Complexity('foo', 1);
+        return new Complexity('foo', 1, 1);
     }
 
     private function complexityForMethod(): Complexity
     {
-        return new Complexity('Foo::bar', 1);
+        return new Complexity('Foo::bar', 1, 1);
     }
 }
