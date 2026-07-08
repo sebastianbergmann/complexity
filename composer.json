@@ -36,6 +36,11 @@
             "src/"
         ]
     },
+    "autoload-dev": {
+        "classmap": [
+            "tests/_oracle/"
+        ]
+    },
     "extra": {
         "branch-alias": {
             "dev-main": "6.0-dev"

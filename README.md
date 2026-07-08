@@ -100,4 +100,29 @@ The final ACPATH value is `ft + rp`: the sum of paths that fall through the enti
 
 ![Complexity Decomposition](.github/img/f_decomposition.dot.svg)
 
-The ACPATH metric is described in [The ACPATH Metric: Precise Estimation of the Number of Acyclic Paths in C-like Languages](https://www.researchgate.net/profile/Patricia-Hill/publication/309425214_The_ACPATH_Metric_Precise_Estimation_of_the_Number_of_Acyclic_Paths_in_C-like_Languages/links/5866d1da08ae6eb871b0a91a/The-ACPATH-Metric-Precise-Estimation-of-the-Number-of-Acyclic-Paths-in-C-like-Languages.pdf) by Roberto Bagnara, Abramo Bagnara, Alessandro Benedetti, and Patricia Hill.
+The ACPATH metric is described in [The ACPATH Metric: Precise Estimation of the Number of Acyclic Paths in C-like Languages](https://arxiv.org/abs/1610.07914) by Roberto Bagnara, Abramo Bagnara, Alessandro Benedetti, and Patricia Hill.
+
+### Correctness
+
+`AcpathCalculator` implements the compositional equations (37)-(53) of the paper (arXiv:1610.07914v4).
+Because the expected values in a test suite are only as trustworthy as whoever computed them, the implementation is validated against two independent sources of truth:
+
+* The paper's own worked examples:
+  The examples of Section 3 and Appendix B, with acyclic path counts published by the authors of the metric, are part of the test suite.
+* A reference oracle:
+  [`ReferenceAcpathOracle`](tests/_oracle/ReferenceAcpathOracle.php) independently implements the paper's Definition 3 (the reference control flow graph, at optimization level 0) and counts acyclic paths by brute force according to Definition 2: entry-to-exit paths that traverse no arc more than once.
+  By Theorem 2 of the paper, this count equals ACPATH for controlled function bodies, so calculator and oracle must agree.
+  [`AcpathCalculatorDifferentialTest`](tests/unit/AcpathCalculatorDifferentialTest.php) asserts this agreement over the test corpus.
+
+The oracle reproduces all of the paper's machine-generated examples (Appendix B) exactly.
+Where calculator and oracle disagree, the divergence is pinned in the differential test with both values, together with its cause:
+
+* A potential defect in the paper, which the calculator inherits:
+  Equation (45) of the paper seems to drop `continue` paths and body re-entry paths in `do-while` loops: for `do { if ($a) continue; } while ($c);` it yields 1, although two executions terminate without traversing any loop back arc, which appears to contradict the paper's Theorem 2.
+  The calculator follows the published equation.
+* A deliberate deviation from the paper:
+  For loop guards such as `while ($i < 10)`, Table 5 of the paper yields ACPATH 1, because the comparison's operand arcs cannot be traversed twice.
+  The calculator counts 2 (loop skipped, loop entered once), which better matches the intuition of testing effort.
+* PHP constructs the paper does not cover: `match`, `throw`, `foreach`, `try`/`catch`, the nullsafe operator, expressions inside call arguments are cases where calculator and oracle currently model control flow differently.
+
+See the `knownDivergenceProvider()` in the differential test for the complete, executable list.
