@@ -63,6 +63,7 @@ final class ComplexityCalculatingVisitor extends NodeVisitorAbstract
         $this->result[] = new Complexity(
             $name,
             $this->cyclomaticComplexity($statements),
+            $this->acpath($statements),
         );
 
         if ($this->shortCircuitTraversal) {
@@ -94,6 +95,16 @@ final class ComplexityCalculatingVisitor extends NodeVisitorAbstract
         $traverser->traverse($statements);
 
         return $cyclomaticComplexityCalculatingVisitor->cyclomaticComplexity();
+    }
+
+    /**
+     * @param Stmt[] $statements
+     *
+     * @return positive-int
+     */
+    private function acpath(array $statements): int
+    {
+        return (new AcpathCalculator)->calculate($statements);
     }
 
     /**

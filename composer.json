@@ -18,6 +18,7 @@
     "prefer-stable": true,
     "require": {
         "php": ">=8.4",
+        "ext-mbstring": "*",
         "nikic/php-parser": "^5.8.0"
     },
     "require-dev": {
@@ -33,6 +34,11 @@
     "autoload": {
         "classmap": [
             "src/"
+        ]
+    },
+    "autoload-dev": {
+        "classmap": [
+            "tests/_oracle/"
         ]
     },
     "extra": {
