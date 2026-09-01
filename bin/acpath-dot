@@ -1,0 +1,140 @@
+#!/usr/bin/env php
+<?php declare(strict_types=1);
+namespace SebastianBergmann\Complexity;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use PhpParser\Node;
+use PhpParser\Node\Stmt;
+use PhpParser\Node\Stmt\Class_;
+use PhpParser\Node\Stmt\ClassMethod;
+use PhpParser\Node\Stmt\Function_;
+use PhpParser\Node\Stmt\Namespace_;
+use PhpParser\Node\Stmt\Trait_;
+use PhpParser\NodeTraverser;
+use PhpParser\NodeVisitor\NameResolver;
+use PhpParser\NodeVisitor\ParentConnectingVisitor;
+use PhpParser\ParserFactory;
+
+if ($argc < 2) {
+    fwrite(STDERR, "Usage: acpath-dot <source-file.php>\n");
+
+    exit(1);
+}
+
+$sourceFile = $argv[1];
+
+if (!file_exists($sourceFile) || !is_readable($sourceFile)) {
+    fwrite(STDERR, "Error: cannot read '{$sourceFile}'\n");
+
+    exit(1);
+}
+
+$source = file_get_contents($sourceFile);
+
+if ($source === false) {
+    fwrite(STDERR, "Error: failed to read '{$sourceFile}'\n");
+
+    exit(1);
+}
+
+$parser = (new ParserFactory)->createForHostVersion();
+$nodes  = $parser->parse($source);
+
+if ($nodes === null) {
+    fwrite(STDERR, "Error: failed to parse '{$sourceFile}'\n");
+
+    exit(1);
+}
+
+$traverser = new NodeTraverser;
+
+$traverser->addVisitor(new NameResolver);
+$traverser->addVisitor(new ParentConnectingVisitor);
+
+$traverser->traverse($nodes);
+
+$cfgVisitor    = new AcpathControlFlowDotVisitor;
+$pathVisitor   = new AcpathPathEnumerationDotVisitor;
+$decompVisitor = new AcpathDecompositionDotVisitor;
+
+$functions = [];
+
+collectFunctions($nodes, $functions);
+
+if ($functions === []) {
+    fwrite(STDERR, "No functions or methods found in '{$sourceFile}'\n");
+
+    exit(1);
+}
+
+$baseDir = dirname($sourceFile);
+
+foreach ($functions as [$name, $stmts]) {
+    $safeName = preg_replace('/[^a-zA-Z0-9_]/', '_', $name);
+
+    $cfgFile    = $baseDir . '/' . $safeName . '_cfg.dot';
+    $pathFile   = $baseDir . '/' . $safeName . '_paths.dot';
+    $decompFile = $baseDir . '/' . $safeName . '_decomposition.dot';
+
+    file_put_contents($cfgFile, $cfgVisitor->generate($stmts));
+    file_put_contents($pathFile, $pathVisitor->generate($stmts));
+    file_put_contents($decompFile, $decompVisitor->generate($stmts));
+
+    fprintf(STDOUT, "%s:\n  %s\n  %s\n  %s\n", $name, $cfgFile, $pathFile, $decompFile);
+}
+
+/**
+ * @param Node[] $nodes
+ * @param list<array{string, Stmt[]}> $result
+ */
+function collectFunctions(array $nodes, array &$result, string $classPrefix = ''): void
+{
+    foreach ($nodes as $node) {
+        if ($node instanceof Function_) {
+            $stmts = $node->getStmts();
+
+            $name = $node->name->toString();
+
+            if ($node->namespacedName !== null) {
+                $name = $node->namespacedName->toString();
+            }
+
+            $result[] = [$name, $stmts];
+        }
+
+        if ($node instanceof ClassMethod) {
+            $stmts = $node->getStmts();
+
+            if ($stmts !== null && !$node->isAbstract()) {
+                $result[] = [$classPrefix . '::' . $node->name->toString(), $stmts];
+            }
+        }
+
+        if ($node instanceof Class_) {
+            $prefix = 'anonymous';
+
+            if ($node->namespacedName !== null) {
+                $prefix = $node->namespacedName->toString();
+            } elseif ($node->name !== null) {
+                $prefix = $node->name->toString();
+            }
+
+            collectFunctions($node->stmts, $result, $prefix);
+        }
+
+        if ($node instanceof Trait_) {
+            $prefix = $node->name->toString();
+
+            if ($node->namespacedName !== null) {
+                $prefix = $node->namespacedName->toString();
+            }
+
+            collectFunctions($node->stmts, $result, $prefix);
+        }
+
+        if ($node instanceof Namespace_) {
+            collectFunctions($node->stmts, $result, $classPrefix);
+        }
+    }
+}

@@ -29,8 +29,8 @@ final class ComplexityCollectionTest extends TestCase
     protected function setUp(): void
     {
         $this->array = [
-            new Complexity('Class::method', 1),
-            new Complexity('function', 2),
+            new Complexity('Class::method', 1, 3),
+            new Complexity('function', 2, 4),
         ];
     }
 
@@ -72,6 +72,13 @@ final class ComplexityCollectionTest extends TestCase
         $collection = ComplexityCollection::fromList($this->array[0], $this->array[1]);
 
         $this->assertSame(3, $collection->cyclomaticComplexity());
+    }
+
+    public function testHasAcpath(): void
+    {
+        $collection = ComplexityCollection::fromList($this->array[0], $this->array[1]);
+
+        $this->assertSame(7, $collection->acpath());
     }
 
     public function testCanBeMerged(): void

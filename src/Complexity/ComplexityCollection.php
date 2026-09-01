@@ -83,6 +83,20 @@ final readonly class ComplexityCollection implements Countable, IteratorAggregat
         return $cyclomaticComplexity;
     }
 
+    /**
+     * @return non-negative-int
+     */
+    public function acpath(): int
+    {
+        $acpath = 0;
+
+        foreach ($this as $item) {
+            $acpath += $item->acpath();
+        }
+
+        return $acpath;
+    }
+
     public function isFunction(): self
     {
         return new self(
