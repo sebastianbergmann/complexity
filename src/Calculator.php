@@ -30,12 +30,15 @@ final class Calculator
      */
     public function calculateForSourceFile(string $sourceFile): ComplexityCollection
     {
-        assert(file_exists($sourceFile));
-        assert(is_readable($sourceFile));
+        if(!file_exists($sourceFile)){
+            throw new RuntimeException('The ' . $sourceFile . ' file does not exist.');
+        }
 
         $source = file_get_contents($sourceFile);
-
-        assert(is_string($source));
+        
+        if(!is_string($source)){
+            throw new RuntimeException('The ' . $sourceFile . ' file is not readable.');
+        }
 
         return $this->calculateForSourceString($source);
     }

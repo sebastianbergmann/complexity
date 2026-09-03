@@ -76,4 +76,14 @@ final class CalculatorTest extends TestCase
         $this->assertSame('SebastianBergmann\Complexity\TestFixture\ExampleClass::method', $result[0]->name());
         $this->assertSame(14, $result[0]->cyclomaticComplexity());
     }
+
+    public function testThrowsExceptionWhenSourceFileDoesNotExist(): void
+    {
+        $sourceFile = __DIR__ . '/../_fixture/NotExistsFile.php';
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessageIs('The ' . $sourceFile . ' file does not exist.');
+
+        (new Calculator)->calculateForSourceFile($sourceFile);
+    }
 }
