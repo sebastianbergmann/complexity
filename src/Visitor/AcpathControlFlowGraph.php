@@ -222,7 +222,7 @@ final class AcpathControlFlowGraph
             }
 
             // Label the edge from condition to then-branch
-            $this->labelLastEdgeFrom($condId, $stmt->stmts, 'true');
+            $this->labelLastEdgeFrom($condId, 'true');
 
             $elseExit = $this->buildStatement($innerIf, $condId);
 
@@ -231,7 +231,7 @@ final class AcpathControlFlowGraph
             }
 
             // Label the edge from condition to else-branch
-            $this->labelLastEdgeFrom($condId, [$innerIf], 'false');
+            $this->labelLastEdgeFrom($condId, 'false');
 
             return $this->hasIncomingEdges($mergeId) ? $mergeId : null;
         }
@@ -243,7 +243,7 @@ final class AcpathControlFlowGraph
             $this->addEdge($thenExit, $mergeId, '', 'solid');
         }
 
-        $this->labelLastEdgeFrom($condId, $stmt->stmts, 'true');
+        $this->labelLastEdgeFrom($condId, 'true');
 
         if ($stmt->else !== null) {
             $elseExit = $this->buildStatements($stmt->else->stmts, $condId);
@@ -252,7 +252,7 @@ final class AcpathControlFlowGraph
                 $this->addEdge($elseExit, $mergeId, '', 'solid');
             }
 
-            $this->labelLastEdgeFrom($condId, $stmt->else->stmts, 'false');
+            $this->labelLastEdgeFrom($condId, 'false');
         } else {
             $this->addEdge($condId, $mergeId, 'false', 'solid');
         }
@@ -276,7 +276,7 @@ final class AcpathControlFlowGraph
             $this->addEdge($bodyExit, $condId, '', 'dashed');
         }
 
-        $this->labelLastEdgeFrom($condId, $stmt->stmts, 'true');
+        $this->labelLastEdgeFrom($condId, 'true');
 
         array_pop($this->loopStack);
 
@@ -339,7 +339,7 @@ final class AcpathControlFlowGraph
 
         $bodyExit = $this->buildStatements($stmt->stmts, $condId);
 
-        $this->labelLastEdgeFrom($condId, $stmt->stmts, 'true');
+        $this->labelLastEdgeFrom($condId, 'true');
 
         // Loop expressions
         if ($bodyExit !== null) {
@@ -379,7 +379,7 @@ final class AcpathControlFlowGraph
 
         $bodyExit = $this->buildStatements($stmt->stmts, $condId);
 
-        $this->labelLastEdgeFrom($condId, $stmt->stmts, 'next');
+        $this->labelLastEdgeFrom($condId, 'next');
 
         if ($bodyExit !== null) {
             $this->addEdge($bodyExit, $condId, '', 'dashed');
@@ -512,17 +512,15 @@ final class AcpathControlFlowGraph
     }
 
     /**
-     * Labels the first edge going from $fromId that was added after the initial edge.
+     * Labels the most recently added unlabeled edge going from $fromId.
      *
-     * @param Stmt[] $stmts
+     * Called right after a branch has been built from a condition node, so
+     * that edge is the one entering that branch.
      */
-    private function labelLastEdgeFrom(int $fromId, array $stmts, string $label): void
+    private function labelLastEdgeFrom(int $fromId, string $label): void
     {
-        // Find the first edge from $fromId that does not already have a label
-        // and was added for the given statements block
         for ($i = count($this->edges) - 1; $i >= 0; $i--) {
             if ($this->edges[$i]['from'] === $fromId && $this->edges[$i]['label'] === '') {
-                // Check this is going to first statement's node, not to merge
                 $this->edges[$i]['label'] = $label;
 
                 return;

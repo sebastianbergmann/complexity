@@ -45,7 +45,7 @@ final class ExpressionPathAnalyzer
         }
 
         if ($expr instanceof BooleanAnd || $expr instanceof LogicalAnd) {
-            ['t' => $t1, 'f' => $f1, 'p' => $p1] = self::expressionPaths($expr->left);
+            ['t' => $t1, 'f' => $f1]             = self::expressionPaths($expr->left);
             ['t' => $t2, 'f' => $f2, 'p' => $p2] = self::expressionPaths($expr->right);
 
             return [
@@ -56,7 +56,7 @@ final class ExpressionPathAnalyzer
         }
 
         if ($expr instanceof BooleanOr || $expr instanceof LogicalOr) {
-            ['t' => $t1, 'f' => $f1, 'p' => $p1] = self::expressionPaths($expr->left);
+            ['t' => $t1, 'f' => $f1]             = self::expressionPaths($expr->left);
             ['t' => $t2, 'f' => $f2, 'p' => $p2] = self::expressionPaths($expr->right);
 
             return [
@@ -69,7 +69,7 @@ final class ExpressionPathAnalyzer
         if ($expr instanceof Ternary) {
             if ($expr->if === null) {
                 // Elvis operator (E1 ?: E2) - same as ||
-                ['t' => $t1, 'f' => $f1, 'p' => $p1] = self::expressionPaths($expr->cond);
+                ['t' => $t1, 'f' => $f1]             = self::expressionPaths($expr->cond);
                 ['t' => $t2, 'f' => $f2, 'p' => $p2] = self::expressionPaths($expr->else);
 
                 return [
@@ -79,7 +79,7 @@ final class ExpressionPathAnalyzer
                 ];
             }
 
-            ['t' => $t1, 'f' => $f1, 'p' => $p1] = self::expressionPaths($expr->cond);
+            ['t' => $t1, 'f' => $f1]             = self::expressionPaths($expr->cond);
             ['t' => $t2, 'f' => $f2, 'p' => $p2] = self::expressionPaths($expr->if);
             ['t' => $t3, 'f' => $f3, 'p' => $p3] = self::expressionPaths($expr->else);
 
@@ -92,7 +92,7 @@ final class ExpressionPathAnalyzer
 
         if ($expr instanceof Coalesce) {
             // Same as ||
-            ['t' => $t1, 'f' => $f1, 'p' => $p1] = self::expressionPaths($expr->left);
+            ['t' => $t1, 'f' => $f1]             = self::expressionPaths($expr->left);
             ['t' => $t2, 'f' => $f2, 'p' => $p2] = self::expressionPaths($expr->right);
 
             return [
@@ -160,9 +160,8 @@ final class ExpressionPathAnalyzer
         }
 
         if ($expr instanceof BooleanAnd || $expr instanceof LogicalAnd) {
-            ['t' => $t1, 'f' => $f1, 'p' => $p1]                     = self::expressionPaths($expr->left);
             ['t' => $t2, 'f' => $f2, 'p' => $p2]                     = self::expressionPaths($expr->right);
-            ['tt' => $tt1, 'tf' => $tf1, 'ff' => $ff1, 'pp' => $pp1] = self::expressionPathsDouble($expr->left);
+            ['tt' => $tt1, 'tf' => $tf1, 'ff' => $ff1]               = self::expressionPathsDouble($expr->left);
             ['tt' => $tt2, 'tf' => $tf2, 'ff' => $ff2, 'pp' => $pp2] = self::expressionPathsDouble($expr->right);
 
             return [
@@ -174,9 +173,8 @@ final class ExpressionPathAnalyzer
         }
 
         if ($expr instanceof BooleanOr || $expr instanceof LogicalOr) {
-            ['t' => $t1, 'f' => $f1, 'p' => $p1]                     = self::expressionPaths($expr->left);
             ['t' => $t2, 'f' => $f2, 'p' => $p2]                     = self::expressionPaths($expr->right);
-            ['tt' => $tt1, 'tf' => $tf1, 'ff' => $ff1, 'pp' => $pp1] = self::expressionPathsDouble($expr->left);
+            ['tt' => $tt1, 'tf' => $tf1, 'ff' => $ff1]               = self::expressionPathsDouble($expr->left);
             ['tt' => $tt2, 'tf' => $tf2, 'ff' => $ff2, 'pp' => $pp2] = self::expressionPathsDouble($expr->right);
 
             return [
@@ -190,9 +188,8 @@ final class ExpressionPathAnalyzer
         if ($expr instanceof Ternary) {
             if ($expr->if === null) {
                 // Elvis operator - same as ||
-                ['t' => $t1, 'f' => $f1, 'p' => $p1]                     = self::expressionPaths($expr->cond);
                 ['t' => $t2, 'f' => $f2, 'p' => $p2]                     = self::expressionPaths($expr->else);
-                ['tt' => $tt1, 'tf' => $tf1, 'ff' => $ff1, 'pp' => $pp1] = self::expressionPathsDouble($expr->cond);
+                ['tt' => $tt1, 'tf' => $tf1, 'ff' => $ff1]               = self::expressionPathsDouble($expr->cond);
                 ['tt' => $tt2, 'tf' => $tf2, 'ff' => $ff2, 'pp' => $pp2] = self::expressionPathsDouble($expr->else);
 
                 return [
@@ -203,10 +200,9 @@ final class ExpressionPathAnalyzer
                 ];
             }
 
-            ['t' => $t1, 'f' => $f1, 'p' => $p1]                     = self::expressionPaths($expr->cond);
             ['t' => $t2, 'f' => $f2, 'p' => $p2]                     = self::expressionPaths($expr->if);
             ['t' => $t3, 'f' => $f3, 'p' => $p3]                     = self::expressionPaths($expr->else);
-            ['tt' => $tt1, 'tf' => $tf1, 'ff' => $ff1, 'pp' => $pp1] = self::expressionPathsDouble($expr->cond);
+            ['tt' => $tt1, 'tf' => $tf1, 'ff' => $ff1]               = self::expressionPathsDouble($expr->cond);
             ['tt' => $tt2, 'tf' => $tf2, 'ff' => $ff2, 'pp' => $pp2] = self::expressionPathsDouble($expr->if);
             ['tt' => $tt3, 'tf' => $tf3, 'ff' => $ff3, 'pp' => $pp3] = self::expressionPathsDouble($expr->else);
 

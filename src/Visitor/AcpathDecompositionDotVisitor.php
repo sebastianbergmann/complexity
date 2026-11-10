@@ -71,7 +71,7 @@ final class AcpathDecompositionDotVisitor
 
         $rootId = $this->addNode('');
 
-        ['ft' => $ft, 'bp' => $bp, 'cp' => $cp, 'rp' => $rp] = $this->processStatements($statements, 1, 0, $rootId);
+        ['ft' => $ft, 'rp' => $rp] = $this->processStatements($statements, 1, 0, $rootId);
 
         $acpath = max(1, $ft + $rp);
 
@@ -133,7 +133,7 @@ final class AcpathDecompositionDotVisitor
     private function processStatement(Stmt $stmt, int $ft, int $st, int $nodeId): array
     {
         if ($stmt instanceof Expression) {
-            ['t' => $t, 'f' => $f, 'p' => $p] = $this->processExpressionPaths($stmt->expr, $nodeId);
+            $p = $this->processExpressionPaths($stmt->expr, $nodeId)['p'];
             $this->setLabel($nodeId, sprintf(
                 '%s|ft=%d, bp=0, cp=0, rp=0',
                 $this->prettyPrintStmt($stmt),
@@ -153,7 +153,7 @@ final class AcpathDecompositionDotVisitor
                 return ['ft' => 0, 'bp' => 0, 'cp' => 0, 'rp' => $ft];
             }
 
-            ['t' => $t, 'f' => $f, 'p' => $p] = $this->processExpressionPaths($stmt->expr, $nodeId);
+            $p = $this->processExpressionPaths($stmt->expr, $nodeId)['p'];
             $this->setLabel($nodeId, sprintf(
                 'return %s|ft=0, bp=0, cp=0, rp=%d',
                 $this->prettyPrintExpr($stmt->expr),
@@ -168,7 +168,7 @@ final class AcpathDecompositionDotVisitor
         }
 
         if ($stmt instanceof Switch_) {
-            return $this->processSwitch($stmt, $ft, $st, $nodeId);
+            return $this->processSwitch($stmt, $ft, $nodeId);
         }
 
         if ($stmt instanceof While_) {
@@ -232,7 +232,7 @@ final class AcpathDecompositionDotVisitor
     {
         $condId = $this->addNode('');
         $this->addEdge($nodeId, $condId, 'condition');
-        ['t' => $t, 'f' => $f, 'p' => $p] = $this->processExpressionPaths($stmt->cond, $condId);
+        ['t' => $t, 'f' => $f] = $this->processExpressionPaths($stmt->cond, $condId);
         $this->setLabel($condId, sprintf(
             'if (%s)|t=%d, f=%d',
             $this->prettyPrintExpr($stmt->cond),
@@ -346,7 +346,7 @@ final class AcpathDecompositionDotVisitor
     /**
      * @return array{ft: int, bp: int, cp: int, rp: int}
      */
-    private function processSwitch(Switch_ $stmt, int $ft, int $st, int $nodeId): array
+    private function processSwitch(Switch_ $stmt, int $ft, int $nodeId): array
     {
         $p          = $this->processExpressionPaths($stmt->cond, $nodeId)['p'];
         $switchSt   = $p * $ft;
@@ -415,7 +415,7 @@ final class AcpathDecompositionDotVisitor
     {
         $condId = $this->addNode('');
         $this->addEdge($nodeId, $condId, 'condition');
-        ['t' => $t, 'f' => $f, 'p' => $p] = $this->processExpressionPaths($stmt->cond, $condId);
+        ['t' => $t, 'f' => $f] = $this->processExpressionPaths($stmt->cond, $condId);
         $this->setLabel($condId, sprintf(
             'while (%s)|t=%d, f=%d',
             $this->prettyPrintExpr($stmt->cond),
@@ -435,8 +435,8 @@ final class AcpathDecompositionDotVisitor
         ));
 
         // Use the simple formula from AcpathCalculator
-        ['t' => $t2, 'f' => $f2, 'p' => $p2] = ExpressionPathAnalyzer::expressionPaths($stmt->cond);
-        ['tf' => $tf]                        = ExpressionPathAnalyzer::expressionPathsDouble($stmt->cond);
+        ['t' => $t2, 'f' => $f2] = ExpressionPathAnalyzer::expressionPaths($stmt->cond);
+        ['tf' => $tf]            = ExpressionPathAnalyzer::expressionPathsDouble($stmt->cond);
 
         $ftOut = $f2 * $ft + $bpS * $t2 + ($ftS + $cpS) * $tf;
 
@@ -506,8 +506,8 @@ final class AcpathDecompositionDotVisitor
             $bodyStmts[] = new Expression($loopExpr);
         }
 
-        ['t' => $t, 'f' => $f, 'p' => $p] = ExpressionPathAnalyzer::expressionPaths($condExpr);
-        ['tf' => $tf]                     = ExpressionPathAnalyzer::expressionPathsDouble($condExpr);
+        ['t' => $t, 'f' => $f] = ExpressionPathAnalyzer::expressionPaths($condExpr);
+        ['tf' => $tf]          = ExpressionPathAnalyzer::expressionPathsDouble($condExpr);
 
         $bodyId = $this->addNode('');
         $this->addEdge($nodeId, $bodyId, 'body');

@@ -39,7 +39,7 @@ final class AcpathCalculator
      */
     public function calculate(array $statements): int
     {
-        ['ft' => $ft, 'bp' => $bp, 'cp' => $cp, 'rp' => $rp] = $this->statements($statements, 1, 0);
+        ['ft' => $ft, 'rp' => $rp] = $this->statements($statements, 1, 0);
 
         return max(1, $ft + $rp);
     }
@@ -91,7 +91,7 @@ final class AcpathCalculator
         }
 
         if ($stmt instanceof Switch_) {
-            return $this->processSwitch($stmt, $ft, $st);
+            return $this->processSwitch($stmt, $ft);
         }
 
         if ($stmt instanceof While_) {
@@ -135,7 +135,7 @@ final class AcpathCalculator
      */
     private function processIf(If_ $stmt, int $ft, int $st): array
     {
-        ['t' => $t, 'f' => $f, 'p' => $p] = ExpressionPathAnalyzer::expressionPaths($stmt->cond);
+        ['t' => $t, 'f' => $f] = ExpressionPathAnalyzer::expressionPaths($stmt->cond);
 
         if ($stmt->elseifs !== []) {
             // Desugar elseif chains to nested if/else
@@ -185,7 +185,7 @@ final class AcpathCalculator
     /**
      * @return array{ft: int, bp: int, cp: int, rp: int}
      */
-    private function processSwitch(Switch_ $stmt, int $ft, int $st): array
+    private function processSwitch(Switch_ $stmt, int $ft): array
     {
         $p          = ExpressionPathAnalyzer::expressionPaths($stmt->cond)['p'];
         $switchSt   = $p * $ft;
@@ -243,7 +243,7 @@ final class AcpathCalculator
      */
     private function processWhile(While_ $stmt, int $ft, int $st): array
     {
-        ['t' => $t, 'f' => $f, 'p' => $p]                        = ExpressionPathAnalyzer::expressionPaths($stmt->cond);
+        ['t' => $t, 'f' => $f]                                   = ExpressionPathAnalyzer::expressionPaths($stmt->cond);
         ['tf' => $tf]                                            = ExpressionPathAnalyzer::expressionPathsDouble($stmt->cond);
         ['ft' => $ftS, 'bp' => $bpS, 'cp' => $cpS, 'rp' => $rpS] = $this->statements($stmt->stmts, $ft, $st);
 
@@ -257,9 +257,12 @@ final class AcpathCalculator
      */
     private function processDo(Do_ $stmt, int $ft, int $st): array
     {
-        ['f' => $f]                                              = ExpressionPathAnalyzer::expressionPaths($stmt->cond);
-        ['ft' => $ftS, 'bp' => $bpS, 'cp' => $cpS, 'rp' => $rpS] = $this->statements($stmt->stmts, $ft, $st);
+        ['f' => $f]                                = ExpressionPathAnalyzer::expressionPaths($stmt->cond);
+        ['ft' => $ftS, 'bp' => $bpS, 'rp' => $rpS] = $this->statements($stmt->stmts, $ft, $st);
 
+        // Per the paper's eq. (45), continue paths of the body are not counted.
+        // This is a known divergence from the reference CFG semantics, see
+        // AcpathCalculatorDifferentialTest::knownDivergenceProvider(), category (A).
         $ftOut = $f * $ftS + $bpS;
 
         return ['ft' => $ftOut, 'bp' => 0, 'cp' => 0, 'rp' => $rpS];
@@ -295,7 +298,7 @@ final class AcpathCalculator
             $bodyStmts[] = new Expression($loopExpr);
         }
 
-        ['t' => $t, 'f' => $f, 'p' => $p]                        = ExpressionPathAnalyzer::expressionPaths($condExpr);
+        ['t' => $t, 'f' => $f]                                   = ExpressionPathAnalyzer::expressionPaths($condExpr);
         ['tf' => $tf]                                            = ExpressionPathAnalyzer::expressionPathsDouble($condExpr);
         ['ft' => $ftS, 'bp' => $bpS, 'cp' => $cpS, 'rp' => $rpS] = $this->statements($bodyStmts, $ft, $st);
 
