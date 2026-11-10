@@ -183,7 +183,7 @@ final class AcpathPathEnumerationDotVisitorTest extends TestCase
         $this->assertStringContainsString('ACPATH paths: 128', $dot);
 
         preg_match_all('/Path \d+:/', $dot, $matches);
-        $this->assertSame(128, count($matches[0]));
+        $this->assertCount(128, $matches[0]);
     }
 
     public function testTitleShowsPathCount(): void
