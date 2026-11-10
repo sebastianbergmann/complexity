@@ -15,6 +15,7 @@ use function assert;
 use function ceil;
 use function count;
 use function implode;
+use function in_array;
 use function intdiv;
 use function min;
 use function round;
@@ -145,6 +146,12 @@ final class AcpathPathEnumerationDotVisitor
     }
 
     /**
+     * Enumerates the acyclic paths of the control flow graph according to
+     * Definition 2 of the paper: the paths from the entry to the exit that
+     * traverse no edge more than once. A path can follow a back-edge (or a
+     * continue edge) to the condition of a loop and then leave the loop, but
+     * it cannot take the edge into the body of the loop a second time.
+     *
      * @return list<list<int>> Each path is a list of edge indices
      */
     private function enumeratePaths(AcpathControlFlowGraph $cfg): array
@@ -171,8 +178,7 @@ final class AcpathPathEnumerationDotVisitor
                     continue;
                 }
 
-                // Skip back-edges (dashed)
-                if ($edge['style'] === 'dashed') {
+                if (in_array($edgeIdx, $currentPath, true)) {
                     continue;
                 }
 

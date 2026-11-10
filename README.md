@@ -78,6 +78,7 @@ Dashed edges mark loop back-edges.
 #### Path Enumeration
 
 The path enumeration graph overlays all distinct entry-to-exit paths onto the control flow graph.
+A path does not traverse any edge more than once: it can follow a back-edge to the condition of a loop and leave the loop, but it cannot enter the body of the loop again.
 Each path is color-coded, and a legend lists the node sequence for each path.
 
 ![Path Enumeration](.github/img/f_paths.dot.svg)

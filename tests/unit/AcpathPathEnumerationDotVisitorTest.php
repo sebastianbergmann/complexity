@@ -61,6 +61,54 @@ final class AcpathPathEnumerationDotVisitorTest extends TestCase
                 '<?php function f($x, $y) { if ($x) { if ($y) { $a = 1; } } }',
                 3,
             ],
+            'while' => [
+                '<?php function f($x) { while ($x) { $a = 1; } }',
+                2,
+            ],
+            'while with empty body' => [
+                '<?php function f($x) { while ($x) { } }',
+                2,
+            ],
+            'if in while' => [
+                '<?php function f($x, $y) { while ($x) { if ($y) { $a = 1; } } }',
+                3,
+            ],
+            'break in while' => [
+                '<?php function f($x, $y) { while ($x) { if ($y) { break; } $a = 1; } }',
+                3,
+            ],
+            'continue in while' => [
+                '<?php function f($x, $y) { while ($x) { if ($y) { continue; } $a = 1; } }',
+                3,
+            ],
+            'return in while' => [
+                '<?php function f($x, $y) { while ($x) { if ($y) { return; } } }',
+                3,
+            ],
+            'for' => [
+                '<?php function f($x) { for ($i = 0; $i < 3; $i++) { if ($x) { $a = 1; } } }',
+                3,
+            ],
+            'foreach' => [
+                '<?php function f($xs) { foreach ($xs as $x) { $a = 1; } }',
+                2,
+            ],
+            'do-while' => [
+                '<?php function f($x) { do { $a = 1; } while ($x); }',
+                1,
+            ],
+            'break in do-while' => [
+                '<?php function f($x, $y) { do { if ($y) { break; } } while ($x); }',
+                2,
+            ],
+            'nested while' => [
+                '<?php function f($x, $y, $z) { while ($x) { while ($y) { if ($z) { $a = 1; } } } }',
+                4,
+            ],
+            'switch in while' => [
+                '<?php function f($x, $y) { while ($x) { switch ($y) { case 1: $a = 1; break; default: $a = 2; } } }',
+                3,
+            ],
         ];
     }
 
@@ -102,14 +150,24 @@ final class AcpathPathEnumerationDotVisitorTest extends TestCase
         $this->assertStringContainsString('penwidth=', $dot);
     }
 
-    public function testWhileLoopSkipsDashedBackEdges(): void
+    public function testPathThroughLoopBodyFollowsBackEdgeToCondition(): void
     {
         $stmts = $this->parseFunction('<?php function f($x) { while ($x) { $a = 1; } }');
         $dot   = (new AcpathPathEnumerationDotVisitor)->generate($stmts);
 
-        $this->assertStringContainsString('shape=diamond', $dot);
-        $this->assertStringContainsString('style=dashed', $dot);
-        $this->assertStringContainsString('Path 1:', $dot);
+        $this->assertStringContainsString('Path 1: 1 → 2 → 1<', $dot);
+        $this->assertStringContainsString('Path 2: 1<', $dot);
+        $this->assertMatchesRegularExpression('/n4 -> n2 \[style=dashed, color="#[0-9a-f]{6}"/', $dot);
+    }
+
+    public function testContinuePathsOfDoWhileLoopAreEnumerated(): void
+    {
+        // AcpathCalculator yields 1 here because it follows eq. (45) of the
+        // paper, see AcpathCalculatorDifferentialTest::knownDivergenceProvider()
+        $stmts = $this->parseFunction('<?php function f($a, $c) { do { if ($a) { continue; } } while ($c); }');
+        $dot   = (new AcpathPathEnumerationDotVisitor)->generate($stmts);
+
+        $this->assertStringContainsString('ACPATH paths: 2', $dot);
     }
 
     public function testAllPathsAreEnumerated(): void
