@@ -10,6 +10,7 @@ EOF;
 
 $finder = PhpCsFixer\Finder::create()
     ->files()
+    ->in(__DIR__ . '/bin')
     ->in(__DIR__ . '/src')
     ->in(__DIR__ . '/tests/unit')
     ->in(__DIR__ . '/tests/integration')
